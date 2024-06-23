@@ -4,8 +4,8 @@ import sys, os, pwd
 import platform
 import re, glob
 
-if os.path.exists('/home/student/yliow'):
-    print("yliow ... halting")
+#if os.path.exists('/home/student/yliow'):
+#   print("yliow ... halting")
 
 user = pwd.getpwuid(os.getuid())[0]
 if user != 'root':
@@ -44,7 +44,7 @@ def python():
     print(">>>> installing python packages ...", flush=True)
     for p in ['/usr/lib/python*.*', '/usr/lib64/python*.*']:
         os.system('cd tmp/update-vm-data/; cp -r python/* %s/site-packages/' % p)
-        os.system('chmod a+rwx %s/site-packages/*' % p)
+        os.system('chmod -R a+rwx %s/site-packages/*' % p)
 
 # alex
 # WARNING: Do not delete ~/.alex in case there's a ~/.alex/alex config file
