@@ -1,2 +1,2 @@
 run:
-	./update
+	python update
