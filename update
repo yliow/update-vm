@@ -16,14 +16,17 @@ os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/upda
 
 # latex
 os.system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliowtest')
-os.system('cp -r tmp/latex  /usr/share/texlive/texmf-local/tex/latex/yliowtest')
-os.system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliowtest')
+os.system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliowtest')
+os.system('cd tmp/update-vm-data/; cp -r latex/*  /usr/share/texlive/texmf-local/tex/latex/yliowtest/')
+os.system('cd tmp/update-vm-data/; chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliowtest')
+os.system('texhash')
 
-#updates python operations for latex
-cp -r ./python/* /usr/lib/python*.*/site-packages/
-chmod a+rwx /usr/lib/python*.*/site-packages/
-cp -r ./python/* /usr/lib64/python*.*/site-packages/
-chmod a+rwx /usr/lib64/python*.*/site-packages/
+# python
+for p in ['/usr/lib/python*.*', '/usr/lib64/python*.*']:
+    os.system('cd tmp/update-vm-data/; cp -r python/* %s/site-packages/' % p)
+    os.system('chmod a+rwx %s/site-packages/' % p)
+
+# alex
 
 os.system('rm -rf tmp')
 
