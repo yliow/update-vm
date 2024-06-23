@@ -2,7 +2,10 @@
 
 import sys, os, pwd
 import platform
-import re
+import re, glob
+
+if os.path.exists('/home/student/yliow'):
+    print("yliow ... halting")
 
 user = pwd.getpwuid(os.getuid())[0]
 if user != 'root':
@@ -41,7 +44,7 @@ def python():
     print(">>>> installing python packages ...", flush=True)
     for p in ['/usr/lib/python*.*', '/usr/lib64/python*.*']:
         os.system('cd tmp/update-vm-data/; cp -r python/* %s/site-packages/' % p)
-        os.system('chmod a+rwx %s/site-packages/' % p)
+        os.system('chmod a+rwx %s/site-packages/*' % p)
 
 # alex
 # WARNING: Do not delete ~/.alex in case there's a ~/.alex/alex config file
@@ -60,7 +63,7 @@ def alex():
     f.write("import alex"); f.close()
 
     for user in users:
-        print(">>>> install alex for %s" % user)
+        print(">>>> install alex for %s ..." % user)
         os.system('mkdir /home/%s/.alex' % user)
         os.system('chmod a+rwx /home/%s/.alex' % user)
         os.system('cd tmp/update-vm-data/alex; cp alexrunner.py /home/%s/.alex/' % user)
@@ -79,7 +82,7 @@ def alex():
 
 download()
 latex()
-#python()
-#alex()
+python()
+alex()
 #os.system('rm -rf tmp')
 
