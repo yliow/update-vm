@@ -21,16 +21,20 @@ print(">>>> python version: %s.%s" % (py_vers[0], py_vers[1]))
 # download data from github
 def download():
     print(">>>> downloading update_vm data ...", flush=True)
-    os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data')
+    os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
 
 # latex
 def latex():
     print(">>>> installing latex packages ...", flush=True)
     os.system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliowtest')
     os.system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliowtest')
-    os.system('cd tmp/update-vm-data/; cp -r latex/*  /usr/share/texlive/texmf-local/tex/latex/yliowtest/')
+    os.system('cd tmp/update-vm-data/; cp -r latex/yliow/* /usr/share/texlive/texmf-local/tex/latex/yliowtest/')
     os.system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliowtest')
     os.system('texhash')
+    os.system('chmod -R a+r /usr/share/texlive/texmf-config/ls-R') 
+    os.system('chmod -R a+r /usr/share/texlive/texmf-dist/ls-R')
+    os.system('chmod -R a+r /usr/share/texlive/texmf-local///ls-R') 
+    os.system('chmod -R a+r /usr/share/texlive/texmf-var/ls-R')
 
 # python
 def python():
@@ -75,7 +79,7 @@ def alex():
 
 download()
 latex()
-python()
-alex()
+#python()
+#alex()
 #os.system('rm -rf tmp')
 
