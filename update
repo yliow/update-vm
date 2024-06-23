@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+import sys, os, pwd
+import platform
+
+user = pwd.getpwuid(os.getuid())[0]
+if user != 'root':
+    print("login as root and run again")
+    sys.exit()
+
+py_vers = platform.python_version().split(".")
+print(py_vers)
+
+#os.system('dnf -y install emacs')
+os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data')
+
+# latex
+os.system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliowtest')
+os.system('cp -r tmp/latex  /usr/share/texlive/texmf-local/tex/latex/yliowtest')
+os.system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliowtest')
+
+#updates python operations for latex
+cp -r ./python/* /usr/lib/python*.*/site-packages/
+chmod a+rwx /usr/lib/python*.*/site-packages/
+cp -r ./python/* /usr/lib64/python*.*/site-packages/
+chmod a+rwx /usr/lib64/python*.*/site-packages/
+
+os.system('rm -rf tmp')
+
