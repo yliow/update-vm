@@ -2,31 +2,41 @@
 
 import sys, os, pwd
 import platform
+import re
 
 user = pwd.getpwuid(os.getuid())[0]
 if user != 'root':
     print("login as root and run again")
     sys.exit()
 
+s = open('/etc/os-release', 'r').read()
+fedora_vers = re.compile('REDHAT_BUGZILLA_PRODUCT_VERSION=(\d+)').search(s).group(1)
+print(">>>> fedora version:", fedora_vers)
+
 py_vers = platform.python_version().split(".")
-print(py_vers)
+print(">>>> python version: %s.%s" % (py_vers[0], py_vers[1]))
 
 #os.system('dnf -y install emacs')
+
+print(">>>> downloading update_vm data ...", flush=True)
 os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data')
 
 # latex
+print("installing python packages ...", flush=True)
 os.system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliowtest')
 os.system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliowtest')
 os.system('cd tmp/update-vm-data/; cp -r latex/*  /usr/share/texlive/texmf-local/tex/latex/yliowtest/')
-os.system('cd tmp/update-vm-data/; chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliowtest')
+os.system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliowtest')
 os.system('texhash')
 
 # python
+'''print("installing python packages ...", flush=True)
 for p in ['/usr/lib/python*.*', '/usr/lib64/python*.*']:
     os.system('cd tmp/update-vm-data/; cp -r python/* %s/site-packages/' % p)
     os.system('chmod a+rwx %s/site-packages/' % p)
+'''
 
 # alex
 
-os.system('rm -rf tmp')
+#os.system('rm -rf tmp')
 
