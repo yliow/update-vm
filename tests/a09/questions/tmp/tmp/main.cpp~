@@ -1,0 +1,20 @@
+#include <iostream>
+
+
+class X
+{
+public:
+    X() : p(new int) {}
+    int * & get() { return p; }
+    int * p;
+};
+
+int main()
+{
+    X x;
+    std::cout << x.get() << std::endl;
+    int * p = new int;
+    std::cout << p << '\n';
+    x.get() = p;
+    std::cout << x.get() << std::endl;
+}

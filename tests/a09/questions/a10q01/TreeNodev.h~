@@ -1,0 +1,22 @@
+#ifndef TREENODEV_H
+#define TREENODEV_H
+
+#include <iostream>
+
+template < typename T >
+class TreeNodev
+{
+public:
+    TreeNodev(const T & data,
+              TreeNodev< T > * parent)
+              : _data(data), _parent(parent)
+{}
+private:
+T _data;
+TreeNodev * _parent;
+std::vector< TreeNodev * > _children;
+};
+private:
+};
+    
+#endif

@@ -1,0 +1,8 @@
+#include <iostream>
+#include "TreeNodev.h"
+
+int main()
+{
+    TreeNodev< int > node;
+    return 0;
+}

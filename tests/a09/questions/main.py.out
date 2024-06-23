@@ -1,0 +1,25 @@
+
+\begin{center}
+
+\begin{tikzpicture}
+\node at (1,-1.5) [circle,draw,minimum size=8mm] (C) {$$};
+\node at (0,-3.0) [circle,draw,minimum size=8mm] (D) {$\texttt{*}$};
+\node at (2,-3.0) [circle,draw,minimum size=8mm] (E) {$\texttt{}$};
+\node at (2,-4.5) [circle,draw,minimum size=8mm] (F) {$\texttt{}$};
+\node at (0,-6.0) [circle,draw,minimum size=8mm] (H) {$\texttt{*}$};
+\node at (2,-6.0) [circle,draw,minimum size=8mm] (G) {$\texttt{*}$};
+\node at (4,-6.0) [circle,draw,minimum size=8mm] (I) {$\texttt{*}$};
+\node at (2,-7.5) [circle,draw,minimum size=8mm] (J) {$\texttt{*}$};
+\draw [->,thick] (C) -- (D) node[pos=0.8,above,inner sep=3mm,circle]{\texttt{a}}  ;
+\draw [->,thick] (C) -- (E) node[auto,pos=0.5]{\texttt{c}}  ;
+\draw [->,thick] (E) -- (F) node[auto,pos=0.5]{\texttt{a}}  ;
+\draw [->,thick] (F) -- (G) node[auto,pos=0.5]{\texttt{n}}  ;
+\draw [->,thick] (F) -- (H) node[pos=0.5,above,inner sep=1mm,circle]{\texttt{b}}  ;
+\draw [->,thick] (F) -- (I) node[pos=0.5,above,inner sep=1mm,circle]{\texttt{t}}  ;
+\draw [->,thick] (G) -- (J) node[auto,pos=0.5]{\texttt{e}}  ;
+
+;
+\end{tikzpicture}
+    
+\end{center}
+
