@@ -64,7 +64,8 @@ def alex():
 
     for user in users:
         print(">>>> install alex for %s ..." % user)
-        os.system('mkdir /home/%s/.alex' % user)
+        if not os.path.isdir('/home/%s/.alex' % user):
+            os.system('mkdir /home/%s/.alex' % user)
         os.system('chmod a+rwx /home/%s/.alex' % user)
         os.system('cd tmp/update-vm-data/alex; cp alexrunner.py /home/%s/.alex/' % user)
         os.system('cd tmp/update-vm-data/alex; python3 import_alex.py; rm -rf import_alex.py')
