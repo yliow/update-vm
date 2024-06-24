@@ -83,5 +83,5 @@ download()
 latex()
 python()
 alex()
-#os.system('rm -rf tmp')
+os.system('rm -rf tmp')
 
