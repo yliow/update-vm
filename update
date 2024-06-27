@@ -7,63 +7,94 @@ import re, glob
 if os.path.exists('/home/student/yliow'):
    print("yliow ... halting")
 
-user = pwd.getpwuid(os.getuid())[0]
+def get_user():
+   return pwd.getpwuid(os.getuid())[0] 
+
+user = get_user()
 if user != 'root':
     print("login as root and run again")
     sys.exit()
 
-s = open('/etc/os-release', 'r').read()
-fedora_vers = re.compile('REDHAT_BUGZILLA_PRODUCT_VERSION=(\d+)').search(s).group(1)
+def get_os():
+    s = open('/etc/os-release', 'r').read()
+    return re.compile('REDHAT_BUGZILLA_PRODUCT_VERSION=(\d+)').search(s).group(1)
+fedora_vers = get_os()
 print(">>>> fedora version:", fedora_vers)
 
 py_vers = platform.python_version().split(".")
 print(">>>> python version: %s.%s" % (py_vers[0], py_vers[1]))
 
+def dnfinstall(name):
+    os.system('dnf install -y %s' % name)
+    
+def emacs():
+    # install emacs and copy init.el
+    dnfinstall('emacs')
+
+def ciss145():
+    for name in ['pygame']:
+        dnfinstall(name)
+
+def ciss245():
+    for name in ['SDL', 'SDL-devel', 
+                 'SDL_gfx-devel', 'SDL_net-devel',
+                 'SDL-static', 'SDL_sound-devel',
+                 'SDL_image-devel', 'SDL_ttf-devel', 'SDL_mixer-devel']:
+        dnfinstall(name)
+
+def ciss380():
+    for name in ['freeglut', 'freeglut-devel', 'glew', 'glew-devel']:
+        dnfinstall(name)
+
+def ciss445():
+    for name in ['ocaml']:
+        dnfinstall(name)
+
+def ciss430():
+    for name in ['httpd', 'mysql', 'mysql-server', 'mysql-devel', 'phpmyadmin',
+                 'MySQL-python', 'python-sqlalchemy',
+                 'mod_wsgi']:
+        dnfinstall(name)
+
+def texlive():
+    for name in ['texlive', 'texlive-latex', 'texlive-import',
+                 'texlive-lipsum', 'texlive-lastpage', 'texlive-upquote',
+                 'texlive-boxedminipage', 'texlive-ulem', 'texlive-cancel']:
+        dnfinstall(name)
+
+def devtools():
+    for name in ['gcc', 'gcc-c++',
+                 'kernel-devel', 'kernel-headers', 'patch',  'make', 'binutils',
+                 'wget',
+                 # Development tools 
+                 'autoconf', 'automake', 'libtool', 'python-devel', 'zlib', 
+                 'python3-devel', 'zlib',  
+                 'gdb', 'ddd', 'meld',
+                 # Miscellaneous software that should be installed:
+                 'tar', 'gzip', 'bzip2', 'rsync', 'firefox',
+                 'pluma', 'caja', 'atril',
+                 # Software Development tools
+                 'git-core']:
+        dnfinstall(name)
+
+def remove_bloatware():
+    for name in [# Bloatware to remove
+          'vinagre',
+          'tigervnc',
+          'simple-scan',
+          'thunderbird']:
+       os.system('dnf remove %s' % name)
+   
 # install fedora packages
 def initial():
-   packages = ['emacs',
-               'gcc', 'gcc-c++',
-               'kernel-devel', 'kernel-headers', 'patch',  'make', ' binutils',
-               'wget',
-               # Development tools 
-               'autoconf', 'automake', 'libtool', 'python-devel', 'zlib', 
-               'python3-devel', 'zlib',  
-               'gdb', 'ddd', 'meld',
-               # CISS145
-               'pygame',
-               # CISS245
-               'SDL', 'SDL-devel', 
-               'SDL_gfx-devel', 'SDL_net-devel',
-               'SDL-static', 'SDL_sound-devel',
-               'SDL_image-devel', 'SDL_ttf-devel', 'SDL_mixer-devel',
-               # Latex 
-               'texlive', 'texlive-latex', 'texlive-import',
-               'texlive-lipsum', 'texlive-lastpage', 'texlive-upquote',
-               'texlive-boxedminipage', 'texlive-ulem', 'texlive-cancel',
-               # Miscellaneous software that should be installed:
-               'tar', 'gzip', 'bzip2', 'rsync', 'firefox',
-               'pluma', 'caja', 'atril'
-'''
-# Bloatware to remove
-yum -y remove vinagre tigervnc simple-scan
-dnf -y remove hexchat thunderbird
-
-#################################################################
-### EXTRA SOFTWARE FOR F31 DISTRIBUTED TO SENIORS AND LAB PCs ###
-#################################################################
-
-# CISS445
-yum -y install pl ocaml
-
-# CISS380 (+ SDL)
-yum -y install freeglut freeglut-devel glew glew-devel
-
-# Software Development tools
-yum -y install git-core
-yum -y install httpd mysql mysql-server mysql-devel phpmyadmin
-yum -y install MySQL-python python-sqlalchemy
-yum -y install mod_wsgi
-'''
+    emacs()
+    devtools()
+    ciss145()
+    ciss245()
+    ciss380()
+    ciss430()
+    css445()
+    texlive()
 
 # download data from github
 def download():
