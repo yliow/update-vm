@@ -8,8 +8,7 @@ if os.path.exists('/home/student/yliow'):
    print("yliow ... halting")
 
 def get_user():
-   return pwd.getpwuid(os.getuid())[0] 
-
+    return pwd.getpwuid(os.getuid())[0] 
 user = get_user()
 if user != 'root':
     print("login as root and run again")
@@ -24,8 +23,13 @@ print(">>>> fedora version:", fedora_vers)
 py_vers = platform.python_version().split(".")
 print(">>>> python version: %s.%s" % (py_vers[0], py_vers[1]))
 
-def dnfinstall(name):
-    os.system('dnf install -y %s' % name)
+def dnfinstall(names):
+    if isinstance(names, str):
+        names = [names]
+    elif not isinstance(names, list):
+        raise Exception("%s not str or list" % names)
+    for name in names:  
+        os.system('dnf install -y %s' % name)
     
 def emacs():
     # install emacs and copy init.el
@@ -36,14 +40,24 @@ def ciss145():
         dnfinstall(name)
 
 def ciss245():
-    for name in ['SDL', 'SDL-devel', 
-                 'SDL_gfx-devel', 'SDL_net-devel',
-                 'SDL-static', 'SDL_sound-devel',
-                 'SDL_image-devel', 'SDL_ttf-devel', 'SDL_mixer-devel']:
+    for name in ['SDL',
+                 'SDL-devel', 
+                 'SDL_gfx-devel',
+                 'SDL_net-devel',
+                 'SDL-static',
+                 'SDL_sound-devel',
+                 'SDL_image-devel',
+                 'SDL_ttf-devel',
+                 'SDL_mixer-devel']:
         dnfinstall(name)
 
 def ciss380():
-    for name in ['freeglut', 'freeglut-devel', 'glew', 'glew-devel']:
+    for name in ['freeglut',
+                 'freeglut-devel',
+                 'glew',
+                 'glew-devel',
+                 'glm-devel',
+                 'assimp-devel']:
         dnfinstall(name)
 
 def ciss445():
@@ -51,38 +65,66 @@ def ciss445():
         dnfinstall(name)
 
 def ciss430():
-    for name in ['httpd', 'mysql', 'mysql-server', 'mysql-devel', 'phpmyadmin',
-                 'MySQL-python', 'python-sqlalchemy',
+    for name in ['httpd',
+                 'mysql',
+                 'mysql-server',
+                 'mysql-devel',
+                 'phpmyadmin',
+                 'MySQL-python',
+                 'python-sqlalchemy',
                  'mod_wsgi']:
         dnfinstall(name)
 
 def texlive():
-    for name in ['texlive', 'texlive-latex', 'texlive-import',
-                 'texlive-lipsum', 'texlive-lastpage', 'texlive-upquote',
-                 'texlive-boxedminipage', 'texlive-ulem', 'texlive-cancel']:
+    for name in ['texlive',
+                 'texlive-latex',
+                 'texlive-import',
+                 'texlive-lipsum',
+                 'texlive-lastpage',
+                 'texlive-upquote',
+                 'texlive-boxedminipage',
+                 'texlive-ulem',
+                 'texlive-cancel']:
         dnfinstall(name)
 
 def devtools():
-    for name in ['gcc', 'gcc-c++',
-                 'kernel-devel', 'kernel-headers', 'patch',  'make', 'binutils',
+    for name in ['gcc',
+                 'gcc-c++',
+                 'kernel-devel',
+                 'kernel-headers',
+                 'patch',
+                 'make',
+                 'binutils',
                  'wget',
                  # Development tools 
-                 'autoconf', 'automake', 'libtool', 'python-devel', 'zlib', 
-                 'python3-devel', 'zlib',  
-                 'gdb', 'ddd', 'meld',
+                 'autoconf',
+                 'automake',
+                 'libtool',
+                 'python-devel', 
+                 'python3-devel',
+                 'zlib',  
+                 'gdb',
+                 'ddd',
+                 'meld',
                  # Miscellaneous software that should be installed:
-                 'tar', 'gzip', 'bzip2', 'rsync', 'firefox',
-                 'pluma', 'caja', 'atril',
+                 'tar',
+                 'gzip',
+                 'bzip2',
+                 'rsync',
+                 'firefox',
+                 'pluma',
+                 'caja',
+                 'atril',
                  # Software Development tools
                  'git-core']:
         dnfinstall(name)
 
 def remove_bloatware():
-    for name in [# Bloatware to remove
-          'vinagre',
-          'tigervnc',
-          'simple-scan',
-          'thunderbird']:
+    # Bloatware to remove
+    for name in ['vinagre',
+                 'tigervnc',
+                 'simple-scan',
+                 'thunderbird']:
        os.system('dnf remove %s' % name)
    
 # install fedora packages
@@ -138,7 +180,7 @@ def alex():
     f.write("import alex"); f.close()
 
     for user in users:
-        print(">>>> install alex for %s ..." % user)
+        print(">>>> install alex for user '%s' ..." % user)
         if not os.path.isdir('/home/%s/.alex' % user):
             os.system('mkdir /home/%s/.alex' % user)
         os.system('chmod a+rwx /home/%s/.alex' % user)
