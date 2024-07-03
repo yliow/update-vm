@@ -7,7 +7,7 @@ import re, glob
 if os.path.exists('/home/student/yliow'):
    print("yliow ... halting")
 
-def get_user():n
+def get_user():
     return pwd.getpwuid(os.getuid())[0] 
 user = get_user()
 if user != 'root':
@@ -204,6 +204,7 @@ def alex():
             f = open('/home/%s/.bashrc' % user, 'w'); f.write(s); f.close()
 
 
+download()
 emacs()
 #initial()
 #download()
