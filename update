@@ -180,7 +180,7 @@ def python():
         os.system('chmod -R a+rwx %s/site-packages/*' % p)
     for p in glob.glob('tmp/update-vm-data/python/*.py'):
         print("p:", p)
-        scriptname = os.path.split(p).split('.')[0]
+        scriptname = os.path.split(p)[-1].split('.')[0]
         print("scriptname:", scriptname)
         #os.system('ln -s %s /usr/local/bin/%s' % (p, scriptname))
 
