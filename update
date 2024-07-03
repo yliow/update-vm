@@ -184,7 +184,7 @@ def python():
             os.system('chmod -R a+rwx %s' % os.path.join(site_package, os.path.split(p)[-1]))
             # create script symlink if p is "*.py"
             print("p:", p)
-            if p.endswith("*.py"):     
+            if p.endswith(".py"):     
                 scriptname = os.path.split(p)[-1].split('.')[0] # example abc
                 progpath = os.path.join(site_package, p)        # example: /usr/lib/python3.7/abc.py
                 scriptpath = os.path.join('/usr/local/bin/', scriptname)
