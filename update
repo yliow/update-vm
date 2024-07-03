@@ -161,10 +161,10 @@ def download():
 def latex():
     """ TODO: change yliowtest to yliow """
     print(">>>> installing latex packages ...", flush=True)
-    os.system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliowtest')
-    os.system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliowtest')
-    os.system('cd tmp/update-vm-data/; cp -r latex/yliow/* /usr/share/texlive/texmf-local/tex/latex/yliowtest/')
-    os.system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliowtest')
+    os.system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliow')
+    os.system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliow')
+    os.system('cd tmp/update-vm-data/; cp -r latex/yliow/* /usr/share/texlive/texmf-local/tex/latex/yliow/')
+    os.system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliow')
     os.system('texhash')
     os.system('chmod -R a+r /usr/share/texlive/texmf-config/ls-R') 
     os.system('chmod -R a+r /usr/share/texlive/texmf-dist/ls-R')
