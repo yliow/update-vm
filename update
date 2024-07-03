@@ -214,12 +214,11 @@ def alex():
         os.system('cd tmp/update-vm-data/alex; cp __pycache__/*.pyc /home/%s/.alex/alex.pyc' % u)
         os.system('chmod a+rwx /home/%s/.alex/*' % u)
         # update .bashrc
-        os.system('cp /home/%s/.bashrc /home/%s/.bashrc.backup' % (u, u))
-        f = open('/home/%s/.bashrc' % user, 'r')
-        s = f.read()
-        f.close()
+        f = open('/home/%s/.bashrc' % u, 'r'); s = f.read(); f.close()
         t = "alias alex='python /home/%s/.alex/alexrunner.py'" % u
         if t not in s:
+            print(">>>> ~/.bashrc is backed up as ~/.bashrc.backup")
+            os.system('cp /home/%s/.bashrc /home/%s/.bashrc.backup' % (u, u))
             s += '\n' + t + '\n'
             f = open('/home/%s/.bashrc' % u, 'w'); f.write(s); f.close()
 
@@ -234,7 +233,7 @@ download() # TESTED
 #initial() # TESTED
 #latex() # TESTED
 #python() # TESTED
-#alex()
+alex()
 remove_bloatware()
 clean()
 print(">>>> done!!!")
