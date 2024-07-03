@@ -54,7 +54,7 @@ def emacs():
        print(">>>>", cmd)
        os.system(cmd)
        os.system('chmod -R a+rwx %s' % dir_) 
-       os.system('chown -R %s %s' % (u, dir_)) 
+       os.system('chown -R %s:%s %s' % (u, u, dir_)) 
 
 def ciss145():
     dnfinstall('pygame')
