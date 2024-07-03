@@ -55,7 +55,7 @@ def emacs():
         os.system('chown -R %s:%s %s' % (u, u, dir_)) 
 
 def ciss145():
-    dnfinstall('pygame')
+    dnfinstall('python-pygame')
 
 def ciss245():
     dnfinstall(['SDL',
@@ -211,11 +211,11 @@ def alex():
 
 download()
 #emacs() # TESTED
-initial()
+#initial() # TESTED
 #download() # TESTED
 #latex()
 #python() # TESTED
 #alex()
 #os.system('rm -rf tmp')
-#remove_bloatware()
+remove_bloatware()
 
