@@ -42,6 +42,7 @@ def dnfinstall(names):
         os.system('dnf install -y %s' % name)
 
 def emacs():
+    # TESTED
     # 1. install emacs
     # 2. for each (non-root) user, copy init.el
     dnfinstall('emacs')
@@ -208,11 +209,11 @@ def alex():
 
 
 download()
-emacs()
+#emacs()
 #initial()
 #download()
 #latex()
-#python()
+python()
 #alex()
 #os.system('rm -rf tmp')
 #remove_bloatware()
