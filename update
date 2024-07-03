@@ -236,3 +236,4 @@ python() # TESTED
 #alex()
 #remove_bloatware()
 clean()
+print(">>>> done!!!")
