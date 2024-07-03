@@ -139,10 +139,11 @@ def dnfremove(names):
       os.system('dnf remove %s' % name)
       
 def remove_bloatware():
-    dnfremove(['vinagre',
-               'tigervnc',
-               'simple-scan',
-               'thunderbird'])
+    dnfremove(['vinagre*',
+               'tigervnc*',
+               'simple-scan*',
+               'thunderbird*',
+               'transmission*'])
               
 # install fedora packages
 def initial():
@@ -226,14 +227,13 @@ def clean():
     print(">>>> clean ...")
     os.system('rm -rf tmp')
    
-download()
+download() # TESTED
 #bashrc() # TESTED
 #emacs() # TESTED
 #initial() # TESTED
-#download() # TESTED
 #latex() # TESTED
-python() # TESTED
+#python() # TESTED
 #alex()
-#remove_bloatware()
+remove_bloatware()
 #clean()
 print(">>>> done!!!")
