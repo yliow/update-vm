@@ -218,8 +218,8 @@ download()
 #emacs() # TESTED
 #initial() # TESTED
 #download() # TESTED
-latex()
-#python() # TESTED
+#latex()
+python() # TESTED
 #alex()
 #os.system('rm -rf tmp')
 #remove_bloatware()
