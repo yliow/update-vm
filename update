@@ -178,6 +178,11 @@ def python():
     for p in ['/usr/lib/python*.*', '/usr/lib64/python*.*']:
         os.system('cd tmp/update-vm-data/; cp -r python/* %s/site-packages/' % p)
         os.system('chmod -R a+rwx %s/site-packages/*' % p)
+    for p in glob.glob('tmp/update-vm-data/python/*.py'):
+        print("p:", p)
+        scriptname = os.path.split(p).split('.')[0]
+        print("scriptname:", scriptname)
+        #os.system('ln -s %s /usr/local/bin/%s' % (p, scriptname))
 
 # alex
 # WARNING: Do not delete ~/.alex in case there's a ~/.alex/alex config file
