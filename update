@@ -52,7 +52,7 @@ def emacs():
        print(">>>>", cmd)
        os.system(cmd)
        os.system('chown -R a+rwx /home/%s/.emacs.d/*' % u) 
-       os.system('chown -R %s /home/%s/.emacs.d' % u) 
+       os.system('chown -R %s /home/%s/.emacs.d' % (u, u)) 
 
 def ciss145():
     dnfinstall('pygame')
