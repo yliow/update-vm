@@ -235,5 +235,5 @@ download()
 python() # TESTED
 #alex()
 #remove_bloatware()
-clean()
+#clean()
 print(">>>> done!!!")
