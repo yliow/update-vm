@@ -213,9 +213,9 @@ download()
 #emacs() # TESTED
 #initial() # TESTED
 #download() # TESTED
-#latex()
+latex()
 #python() # TESTED
 #alex()
 #os.system('rm -rf tmp')
-remove_bloatware()
+#remove_bloatware()
 
