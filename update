@@ -174,7 +174,6 @@ def latex():
     os.system('chmod -R a+r /usr/share/texlive/texmf-local///ls-R') 
     os.system('chmod -R a+r /usr/share/texlive/texmf-var/ls-R')
 
-# python
 def python():
     # TESTED
     print(">>>> installing python packages ...", flush=True)
@@ -182,7 +181,7 @@ def python():
     for p in glob.glob('tmp/update-vm-data/python/*'): # use '*' to include dir case
         for site_package in site_packages:
             os.system('cp -r %s %s' % (p, site_package))
-            os.system('chmod -R a+rwx %s' % os.path.join(site_package, p))
+            os.system('chmod -R a+rwx %s' % os.path.join(site_package, os.path.split(p)[-1]))
             # create script symlink if p is "*.py"
             if p.endswith("*.py"):     
                 scriptname = os.path.split(p)[-1].split('.')[0] # example abc
