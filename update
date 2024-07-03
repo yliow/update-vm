@@ -188,7 +188,7 @@ def python():
             scriptpath = os.path.join('/usr/local/bin/', scriptname)
             print('progpath:', progpath) 
             print('scriptpath:', scriptpath) 
-            #os.system('ln -s %s %s' % (progpath, scriptpath))
+            os.system('ln -s %s %s' % (progpath, scriptpath))
 
 # alex
 # WARNING: Do not delete ~/.alex in case there's a ~/.alex/alex config file
