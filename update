@@ -222,14 +222,17 @@ def alex():
             f = open('/home/%s/.bashrc' % u, 'w'); f.write(s); f.close()
 
 
+def clean():
+    print(">>>> clean ...")
+    os.system('rm -rf tmp')
+   
 download()
 #bashrc() # TESTED
 #emacs() # TESTED
 #initial() # TESTED
 #download() # TESTED
-#latex()
+#latex() # TESTED
 python() # TESTED
 #alex()
-#os.system('rm -rf tmp')
 #remove_bloatware()
-
+clean()
