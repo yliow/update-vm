@@ -33,7 +33,6 @@ def get_users():
 users = get_users()
 print(">>>> users found:", users)
 
-
 def dnfinstall(names):
     if isinstance(names, str):
         names = [names]
@@ -42,7 +41,6 @@ def dnfinstall(names):
     for name in names:  
         os.system('dnf install -y %s' % name)
 
-        
 def emacs():
     # 1. install emacs
     # 2. for each (non-root) user, copy init.el
@@ -189,24 +187,24 @@ def alex():
     f = open('tmp/update-vm-data/alex/import_alex.py', 'w')
     f.write("import alex"); f.close()
 
-    for user in users:
-        print(">>>> install alex for user '%s' ..." % user)
-        if not os.path.isdir('/home/%s/.alex' % user):
-            os.system('mkdir /home/%s/.alex' % user)
-        os.system('chmod a+rwx /home/%s/.alex' % user)
-        os.system('cd tmp/update-vm-data/alex; cp alexrunner.py /home/%s/.alex/' % user)
+    for u in users:
+        print(">>>> install alex for user '%s' ..." % u)
+        if not os.path.isdir('/home/%s/.alex' % u):
+            os.system('mkdir /home/%s/.alex' % u)
+        os.system('chmod a+rwx /home/%s/.alex' % u)
+        os.system('cd tmp/update-vm-data/alex; cp alexrunner.py /home/%s/.alex/' % u)
         os.system('cd tmp/update-vm-data/alex; python3 import_alex.py; rm -rf import_alex.py')
-        os.system('cd tmp/update-vm-data/alex; cp __pycache__/*.pyc /home/%s/.alex/alex.pyc' % user)
-        os.system('chmod a+rwx /home/%s/.alex/*' % user)
+        os.system('cd tmp/update-vm-data/alex; cp __pycache__/*.pyc /home/%s/.alex/alex.pyc' % u)
+        os.system('chmod a+rwx /home/%s/.alex/*' % u)
         # update .bashrc
-        os.system('cp /home/%s/.bashrc /home/%s/.bashrc.backup' % (user, user))
+        os.system('cp /home/%s/.bashrc /home/%s/.bashrc.backup' % (u, u))
         f = open('/home/%s/.bashrc' % user, 'r')
         s = f.read()
         f.close()
-        t = "alias alex='python /home/%s/.alex/alexrunner.py'" % user
+        t = "alias alex='python /home/%s/.alex/alexrunner.py'" % u
         if t not in s:
             s += '\n' + t + '\n'
-            f = open('/home/%s/.bashrc' % user, 'w'); f.write(s); f.close()
+            f = open('/home/%s/.bashrc' % u, 'w'); f.write(s); f.close()
 
 
 download()
