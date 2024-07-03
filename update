@@ -47,7 +47,9 @@ def emacs():
     # install emacs and copy init.el
     dnfinstall('emacs')
     os.system('mkdir /home/student/.emacs.d/')
-    os.system('cd tmp/update-vm-data/emacs; cp init.el /home/%s/.emacs.d/' % user)
+    cmd = 'cd tmp/update-vm-data/emacs/; cp init.el /home/%s/.emacs.d/' % user
+    print(">>>>", cmd)
+    os.system(cmd)
     os.system('chmod -R a+rwx /home/%s/.emacs.d/*' % user) 
 
 def ciss145():
