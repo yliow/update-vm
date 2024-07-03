@@ -51,9 +51,7 @@ def emacs():
         dir_ = '/home/%s/.emacs.d' % u
         if not os.path.isdir(dir_):
             os.system('mkdir %s' % dir_)
-        cmd = 'cd tmp/update-vm-data/emacs/; cp init.el %s' % dir_
-        print(">>>>", cmd)
-        os.system(cmd)
+        os.system('cd tmp/update-vm-data/emacs/; cp init.el %s' % dir_)
         os.system('chmod -R a+rwx %s' % dir_) 
         os.system('chown -R %s:%s %s' % (u, u, dir_)) 
 
