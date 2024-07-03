@@ -173,6 +173,7 @@ def latex():
 
 # python
 def python():
+    # TESTED
     print(">>>> installing python packages ...", flush=True)
     for p in ['/usr/lib/python*.*', '/usr/lib64/python*.*']:
         os.system('cd tmp/update-vm-data/; cp -r python/* %s/site-packages/' % p)
@@ -209,11 +210,11 @@ def alex():
 
 
 download()
-#emacs()
-#initial()
-#download()
+#emacs() # TESTED
+initial()
+#download() # TESTED
 #latex()
-python()
+#python() # TESTED
 #alex()
 #os.system('rm -rf tmp')
 #remove_bloatware()
