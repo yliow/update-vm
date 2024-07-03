@@ -46,13 +46,15 @@ def dnfinstall(names):
 def emacs():
     # install emacs and copy init.el
     dnfinstall('emacs')
-    os.system('mkdir /home/student/.emacs.d/')
     for u in users:
-       cmd = 'cd tmp/update-vm-data/emacs/; cp init.el /home/%s/.emacs.d/' % u
+       dir_ = '/home/%s/.emacs.d' % u
+       if not os.path.isdir(dir_):
+          os.system(dir_)
+       cmd = 'cd tmp/update-vm-data/emacs/; cp init.el %s' % dir_
        print(">>>>", cmd)
        os.system(cmd)
-       os.system('chmod -R a+rwx /home/%s/.emacs.d/*' % u) 
-       os.system('chown -R %s /home/%s/.emacs.d' % (u, u)) 
+       os.system('chmod -R a+rwx %s' % dir_) 
+       os.system('chown -R %s %s' % (u, dir_)) 
 
 def ciss145():
     dnfinstall('pygame')
