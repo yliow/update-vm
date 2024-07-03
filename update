@@ -7,7 +7,7 @@ import re, glob
 if os.path.exists('/home/student/yliow'):
    print("yliow ... halting")
 
-def get_user():
+def get_user():n
     return pwd.getpwuid(os.getuid())[0] 
 user = get_user()
 if user != 'root':
@@ -23,6 +23,17 @@ print(">>>> fedora version:", fedora_vers)
 py_vers = platform.python_version().split(".")
 print(">>>> python version: %s.%s" % (py_vers[0], py_vers[1]))
 
+def get_users():
+    os.system('ls /home/ > home.txt')
+    f = open('home.txt', 'r')
+    s = f.read()
+    f.close()
+    s = [_.strip() for _ in s.split('\n') if _.strip() != '']
+    return [_ for _ in s if _ != 'root']
+users = get_users()
+print(">>>> users found:", users)
+
+
 def dnfinstall(names):
     if isinstance(names, str):
         names = [names]
@@ -30,103 +41,102 @@ def dnfinstall(names):
         raise Exception("%s not str or list" % names)
     for name in names:  
         os.system('dnf install -y %s' % name)
-    
+
+        
 def emacs():
     # install emacs and copy init.el
     dnfinstall('emacs')
+    os.system('mkdir /home/student/.emacs.d/')
+    os.system('cd tmp/update-vm-data/emacs; cp init.el /home/%s/.emacs.d/' % user)
+    os.system('chmod -R a+rwx /home/%s/.emacs.d/*' % user) 
 
 def ciss145():
-    for name in ['pygame']:
-        dnfinstall(name)
+    dnfinstall('pygame')
 
 def ciss245():
-    for name in ['SDL',
-                 'SDL-devel', 
-                 'SDL_gfx-devel',
-                 'SDL_net-devel',
-                 'SDL-static',
-                 'SDL_sound-devel',
-                 'SDL_image-devel',
-                 'SDL_ttf-devel',
-                 'SDL_mixer-devel']:
-        dnfinstall(name)
+    dnfinstall(['SDL',
+                'SDL-devel', 
+                'SDL_gfx-devel',
+                'SDL_net-devel',
+                'SDL-static',
+                'SDL_sound-devel',
+                'SDL_image-devel',
+                'SDL_ttf-devel',
+                'SDL_mixer-devel'])
 
 def ciss380():
-    for name in ['freeglut',
-                 'freeglut-devel',
-                 'glew',
-                 'glew-devel',
-                 'glm-devel',
-                 'assimp-devel']:
-        dnfinstall(name)
+    dnfinstall(['freeglut',
+                'freeglut-devel',
+                'glew',
+                'glew-devel',
+                'glm-devel',
+                'assimp-devel'])
 
 def ciss445():
-    for name in ['ocaml']:
-        dnfinstall(name)
+    dnfinstall('ocaml')
 
 def ciss430():
-    for name in ['httpd',
-                 'mysql',
-                 'mysql-server',
-                 'mysql-devel',
-                 'phpmyadmin',
-                 'MySQL-python',
-                 'python-sqlalchemy',
-                 'mod_wsgi']:
-        dnfinstall(name)
+    dnfinstall(['httpd',
+                'mysql',
+                'mysql-server',
+                'mysql-devel',
+                'phpmyadmin',
+                'MySQL-python',
+                'python-sqlalchemy',
+                'mod_wsgi'])
 
 def texlive():
-    for name in ['texlive',
-                 'texlive-latex',
-                 'texlive-import',
-                 'texlive-lipsum',
-                 'texlive-lastpage',
-                 'texlive-upquote',
-                 'texlive-boxedminipage',
-                 'texlive-ulem',
-                 'texlive-cancel']:
-        dnfinstall(name)
+    dnfinstall(['texlive',
+                'texlive-latex',
+                'texlive-import',
+                'texlive-lipsum',
+                'texlive-lastpage',
+                'texlive-upquote',
+                'texlive-boxedminipage',
+                'texlive-ulem',
+                'texlive-cancel'])
 
 def devtools():
-    for name in ['gcc',
-                 'gcc-c++',
-                 'kernel-devel',
-                 'kernel-headers',
-                 'patch',
-                 'make',
-                 'binutils',
-                 'wget',
-                 # Development tools 
-                 'autoconf',
-                 'automake',
-                 'libtool',
-                 'python-devel', 
-                 'python3-devel',
-                 'zlib',  
-                 'gdb',
-                 'ddd',
-                 'meld',
-                 # Miscellaneous software that should be installed:
-                 'tar',
-                 'gzip',
-                 'bzip2',
-                 'rsync',
-                 'firefox',
-                 'pluma',
-                 'caja',
-                 'atril',
-                 # Software Development tools
-                 'git-core']:
-        dnfinstall(name)
+    dnfinstall(['gcc',
+                'gcc-c++',
+                'libasan',
+                'kernel-devel',
+                'kernel-headers',
+                'patch',
+                'make',
+                'binutils',
+                'wget',
+                'autoconf',
+                'automake',
+                'libtool',
+                'python-devel', 
+                'python3-devel',
+                'zlib',  
+                'gdb',
+                'ddd',
+                'meld',
+                'tar',
+                'gzip',
+                'bzip2',
+                'rsync',
+                'firefox',
+                'pluma',
+                'caja',
+                'atril',
+                'git-core'])
 
+def dnfremove(names):
+   if isinstance(names, str):
+      names = [names]
+   for name in names:
+      os.system('dnf remove %s' % name)
+      
 def remove_bloatware():
-    # Bloatware to remove
-    for name in ['vinagre',
-                 'tigervnc',
-                 'simple-scan',
-                 'thunderbird']:
-       os.system('dnf remove %s' % name)
-   
+    dnfremove(['vinagre',
+               'tigervnc',
+               'simple-scan',
+               'thunderbird'])
+              
 # install fedora packages
 def initial():
     emacs()
@@ -140,11 +150,12 @@ def initial():
 
 # download data from github
 def download():
-    print(">>>> downloading update_vm data ...", flush=True)
+    print(">>>> downloading update-vm-data ...", flush=True)
     os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
 
 # latex
 def latex():
+    """ TODO: change yliowtest to yliow """
     print(">>>> installing latex packages ...", flush=True)
     os.system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliowtest')
     os.system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliowtest')
@@ -168,14 +179,8 @@ def python():
 # WARNING: alex is installed for all users (except root)
 def alex():
     print(">>>> installing alex ...", flush=True)
-    os.system('ls /home/ > home.txt')
-    f = open('home.txt', 'r')
-    s = f.read()
-    f.close()
-    s = [_.strip() for _ in s.split('\n') if _.strip() != '']
-    users = [_ for _ in s if _ != 'root']
-    print(">>>> users found ... ", users)
-
+    users = get_users()
+    
     f = open('tmp/update-vm-data/alex/import_alex.py', 'w')
     f.write("import alex"); f.close()
 
@@ -198,9 +203,13 @@ def alex():
             s += '\n' + t + '\n'
             f = open('/home/%s/.bashrc' % user, 'w'); f.write(s); f.close()
 
-download()
-latex()
-python()
-alex()
-os.system('rm -rf tmp')
+
+emacs()
+#initial()
+#download()
+#latex()
+#python()
+#alex()
+#os.system('rm -rf tmp')
+#remove_bloatware()
 
