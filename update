@@ -188,6 +188,8 @@ def python():
                 scriptname = os.path.split(p)[-1].split('.')[0] # example abc
                 progpath = os.path.join(site_package, p)        # example: /usr/lib/python3.7/abc.py
                 scriptpath = os.path.join('/usr/local/bin/', scriptname)
+                if os.path.islink(scriptpath):x
+                    os.system('rm -rf %s' % scriptpath)
                 cmd = 'ln -s %s %s' % (progpath, scriptpath)
                 os.system('ln -s %s %s' % (progpath, scriptpath))
 
