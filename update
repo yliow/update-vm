@@ -51,7 +51,8 @@ def emacs():
        cmd = 'cd tmp/update-vm-data/emacs/; cp init.el /home/%s/.emacs.d/' % u
        print(">>>>", cmd)
        os.system(cmd)
-       os.system('chmod -R a+rwx /home/%s/.emacs.d/*' % u) 
+       os.system('chown -R a+rwx /home/%s/.emacs.d/*' % u) 
+       os.system('chown -R %s /home/%s/.emacs.d' % u) 
 
 def ciss145():
     dnfinstall('pygame')
