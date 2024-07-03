@@ -175,16 +175,15 @@ def latex():
 def python():
     # TESTED
     print(">>>> installing python packages ...", flush=True)
-    site_packages_dirs = glob.glob('/usr/lib/python*.*/site-packages') + \
-       glob.glob('/usr/lib64/python*.*/site-packages')
-    for p in ['/usr/lib/python*.*', '/usr/lib64/python*.*']:
-        os.system('cd tmp/update-vm-data/; cp -r python/* %s/site-packages/' % p)
-        os.system('chmod -R a+rwx %s/site-packages/*' % p)
-    for p in glob.glob('tmp/update-vm-data/python/*.py'):
-        progname = os.path.split(p)[-1] # example abc.py
-        scriptname = os.path.split(progname)[-1].split('.')[0] # example abc
-        for q in site_packages_dirs:
-            progpath = os.path.join(q, progname) # example: /usr/lib/python3.7/abc.py
+    site_packages = glob.glob('/usr/lib*/python*.*/site-packages/')
+    for p in glob.glob('tmp/update-vm-data/python/*'): # use '*' to include dir case
+        for site_package in site_packages:
+            os.system('cp -r %s %s' % (p, site_package))
+            os.system('chmod -R a+rwx %s' % os.path.join(site_package, p))
+        # create script symlink if p is "*.py"
+        if p.endswith("*.py"):     
+            scriptname = os.path.split(p)[-1].split('.')[0] # example abc
+            progpath = os.path.join(site_package, p)        # example: /usr/lib/python3.7/abc.py
             scriptpath = os.path.join('/usr/local/bin/', scriptname)
             os.system('ln -s %s %s' % (progpath, scriptpath))
 
