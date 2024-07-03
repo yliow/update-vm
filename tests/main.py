@@ -1,0 +1,2 @@
+r:
+	cd python && mae

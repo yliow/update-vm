@@ -41,6 +41,9 @@ def dnfinstall(names):
     for name in names:  
         os.system('dnf install -y %s' % name)
 
+def bashrc():
+    print("TODO: .bashrc")
+    
 def emacs():
     # TESTED
     # 1. install emacs
@@ -218,6 +221,7 @@ def alex():
 
 
 download()
+#bashrc() # TESTED
 #emacs() # TESTED
 #initial() # TESTED
 #download() # TESTED
