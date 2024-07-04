@@ -45,7 +45,6 @@ def bashrc():
     print("TODO: .bashrc")
     
 def emacs():
-    # TESTED
     # 1. install emacs
     # 2. for each (non-root) user, copy init.el
     dnfinstall('emacs')
@@ -162,7 +161,6 @@ def download():
     print(">>>> downloading update-vm-data ...", flush=True)
     os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
 
-# latex
 def latex():
     """ TODO: change yliowtest to yliow """
     print(">>>> installing latex packages ...", flush=True)
@@ -177,7 +175,6 @@ def latex():
     os.system('chmod -R a+r /usr/share/texlive/texmf-var/ls-R')
 
 def python():
-    # TESTED
     print(">>>> installing python packages ...", flush=True)
     site_packages = glob.glob('/usr/lib*/python*.*/site-packages/')
     for p in glob.glob('tmp/update-vm-data/python/*'): # use '*' to include dir case
@@ -193,7 +190,7 @@ def python():
                     os.system('rm -rf %s' % scriptpath)
                 cmd = 'ln -s %s %s' % (progpath, scriptpath)
                 os.system('ln -s %s %s' % (progpath, scriptpath))
-
+                  
 # alex
 # WARNING: Do not delete ~/.alex in case there's a ~/.alex/alex config file
 # WARNING: alex is installed for all users (except root)
@@ -226,6 +223,18 @@ def alex():
 def clean():
     print(">>>> clean ...")
     os.system('rm -rf tmp')
+
+def tests():
+    print("Testing g++: you should not see any error messages")
+    os.system('cd tests/cpp/; make')
+    print("Testing python: you should not see any error messages")
+    os.system('cd tests/python/; make')
+    print("Testing latex: you should not see any error messages")
+    os.system('cd tests/latex/; make')
+    print("Testing latex: you should not see any error messages")
+    os.system('cd tests/latex/; make')
+    print("Testing opengl: you should not see any error messages")
+    os.system('cd tests/opengl/; make')
    
 download() # TESTED
 #bashrc() # TESTED
