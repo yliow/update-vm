@@ -39,14 +39,14 @@ def dnfinstall(names):
     elif not isinstance(names, list):
         raise Exception("%s not str or list" % names)
     for name in names:  
-        os.system('dnf install -y %s' % name)
+        system('dnf install -y %s' % name)
 
 def bashrc():
     users = get_users()
     for u in users:
         print(">>>> install .bashrc for user '%s' ..." % u)
-        os.system('cp tmp/update-vm-data/bashrc/.bashrc /home/%s/.bashrc' % u)
-        os.system('chmod a+rwx /home/%s/.bashrc' % u)
+        system('cp tmp/update-vm-data/bashrc/.bashrc /home/%s/.bashrc' % u)
+        system('chmod a+rwx /home/%s/.bashrc' % u)
 
     f = open('/root/.bashrc', 'r'); s = f.read(); f.close()
     if "alias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make'\n" not in s:
@@ -60,10 +60,10 @@ def emacs():
     for u in users:
         dir_ = '/home/%s/.emacs.d' % u
         if not os.path.isdir(dir_):
-            os.system('mkdir %s' % dir_)
-        os.system('cd tmp/update-vm-data/emacs/; cp init.el %s' % dir_)
-        os.system('chmod -R a+rwx %s' % dir_) 
-        os.system('chown -R %s:%s %s' % (u, u, dir_)) 
+            system('mkdir %s' % dir_)
+        system('cd tmp/update-vm-data/emacs/; cp init.el %s' % dir_)
+        system('chmod -R a+rwx %s' % dir_) 
+        system('chown -R %s:%s %s' % (u, u, dir_)) 
 
 def ciss145():
     dnfinstall('python-pygame')
@@ -144,8 +144,7 @@ def dnfremove(names):
    if isinstance(names, str):
       names = [names]
    for name in names:
-      print('>>>> dnf remove %s' % name)
-      os.system('dnf remove %s' % name)
+      system('dnf remove %s' % name)
       
 def remove_bloatware():
     dnfremove(['vinagre*',
@@ -162,7 +161,7 @@ def initial():
     ciss245()
     ciss380()
     ciss430()
-    css445()
+    ciss445()
     texlive()
 
 # download data from github
