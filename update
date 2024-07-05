@@ -42,8 +42,12 @@ def dnfinstall(names):
         os.system('dnf install -y %s' % name)
 
 def bashrc():
-    print("TODO: .bashrc")
-    
+    users = get_users()
+    for u in users:
+        print(">>>> install .bashrc for user '%s' ..." % u)
+        os.system('cp tmp/update-vm-data/bashrc/.bashrc /home/%s/.bashrc' % u)
+        os.system('chmod a+rwx /home/%s/.bashrc' % u)
+
 def emacs():
     # 1. install emacs
     # 2. for each (non-root) user, copy init.el
@@ -237,7 +241,7 @@ def tests():
     os.system('cd tests/opengl/; make')
    
 download() # TESTED
-#bashrc() # TESTED
+bashrc() # TESTED
 #emacs() # TESTED
 #initial() # TESTED
 #latex() # TESTED
