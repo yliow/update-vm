@@ -92,7 +92,7 @@ def emacs():
         if not os.path.isdir(dir_):
             system('mkdir %s' % dir_)
         system('cp %s %s' % (os.path.join(dir_, 'init.el'),
-                             os.path.join(dir_, 'init.el.backup'))
+                             os.path.join(dir_, 'init.el.backup')))
         system('cd tmp/update-vm-data/emacs/; cp init.el %s' % dir_)
         system('chmod -R a+rwx %s' % dir_) 
         system('chown -R %s:%s %s' % (u, u, dir_)) 
