@@ -257,28 +257,23 @@ def clean():
     system('rm -rf tmp')
 
 def tests():
-    print(">>>> Testing g++: you should not see any error messages")
-    x = input("press enter to continue or q to quit")
+    print(">>>> Testing g++:")
+    x = input("press enter to continue or q to quit (you should not see error messages): ")
     if x.strip() == 'q': sys.exit()
     system('cd tests/cpp/; make')
     
-    print(">>>> Testing python: you should not see any error messages")
-    x = input("press enter to continue or q to quit")
+    print(">>>> Testing python:")
+    x = input("press enter to continue or q to quit (you should not see error messages): ")
     if x.strip() == 'q': sys.exit()
     system('cd tests/python/; make')
     
-    print(">>>> Testing latex: you should not see any error messages")
-    x = input("press enter to continue or q to quit")
+    print(">>>> Testing latex:")
+    x = input("press enter to continue or q to quit (you should not see error messages): ")
     if x.strip() == 'q': sys.exit()
     system('cd tests/latex/; make')
 
-    print(">>>> Testing latex: you should not see any error messages")
-    x = input("press enter to continue or q to quit")
-    if x.strip() == 'q': sys.exit()
-    system('cd tests/latex/; make')
-
-    print(">>>> Testing opengl: you should not see any error messages")
-    x = input("press enter to continue or q to quit")
+    print(">>>> Testing opengl:")
+    x = input("press enter to continue or q to quit (you should not see error messages): ")
     if x.strip() == 'q': sys.exit()
     system('cd tests/opengl/; make')
    

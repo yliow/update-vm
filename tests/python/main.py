@@ -1,8 +1,10 @@
 import os
-print("testing python ...")
 try:
+    print(">>>> import latextool_basic ...")
     import latextool_basic
+    print(">>>> import latexcircuit ...")
     import latexcircuit
+    print(">>>> import pygame ...")
     import makemake
     import findgrep
     os.system('findgrep')
