@@ -48,12 +48,10 @@ def bashrc():
         os.system('cp tmp/update-vm-data/bashrc/.bashrc /home/%s/.bashrc' % u)
         os.system('chmod a+rwx /home/%s/.bashrc' % u)
 
-    f = open('/etc/skel/.bashrc', 'r'); s = f.read(); f.close()
-    if "alias alex='python /home/student/.alex/alexrunner.py" not in s:
-        s += "\nalias alex='python /home/student/.alex/alexrunner.py\n"
-    if "alias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make'" not in s:
-        s += "\nalias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make'\n"
-    f = open('/root/.bashrc', 'w'); f.write(s); f.close()
+    f = open('/root/.bashrc', 'r'); s = f.read(); f.close()
+    if "alias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make\n" not in s:
+        s += "\nalias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make\n"
+        f = open('/root/.bashrc', 'w'); f.write(s); f.close()
         
 
 
