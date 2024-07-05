@@ -283,7 +283,7 @@ def tests():
     system('cd tests/opengl/; make')
    
 cwd = os.getcwd()
-maps = ['bashrc':[bashrc],
+maps = {'bashrc':[bashrc],
         'emacs':[emacs],
         'devtools':[devtools],
         'bloatware':[bloatware],
@@ -298,7 +298,7 @@ maps = ['bashrc':[bashrc],
         'ciss445':[ciss445],
         'all':[everything],
         'tests':[tests],
-]
+}
                
 if len(sys.argv) == 1:
     sys.argv.append('all')
