@@ -7,6 +7,21 @@ import re, glob
 if os.path.exists('/home/student/yliow'):
    print("yliow ... halting")
 
+if any(_ in sys.argv for _ in ['?', 'h', '-h', 'help', '--help', '-help']):
+   print(r'''
+to update your vm do one of the following:
+
+* in your bash shell, login as root and execute "update-vm":
+      su
+      update-vm
+* in your bash shell, login as root, go to ~/update-vm, execute make:
+      su
+      cd ~/update-vm
+      make
+   
+   ''')
+   sys.exit()
+
 def get_user():
     return pwd.getpwuid(os.getuid())[0] 
 user = get_user()
@@ -33,6 +48,15 @@ def get_users():
 users = get_users()
 print(">>>> users found:", users)
 
+# download data from github
+def download():
+    print(">>>> downloading update-vm-data ...", flush=True)
+    os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
+
+def system(cmd):
+    print(">>>>", cmd)
+    os.system(cmd)
+
 def dnfinstall(names):
     if isinstance(names, str):
         names = [names]
@@ -40,6 +64,12 @@ def dnfinstall(names):
         raise Exception("%s not str or list" % names)
     for name in names:  
         system('dnf install -y %s' % name)
+        
+def dnfremove(names):
+   if isinstance(names, str):
+      names = [names]
+   for name in names:
+      system('dnf remove %s' % name)
 
 def bashrc():
     users = get_users()
@@ -61,55 +91,11 @@ def emacs():
         dir_ = '/home/%s/.emacs.d' % u
         if not os.path.isdir(dir_):
             system('mkdir %s' % dir_)
+        system('cp %s %s' % (os.path.join(dir_, 'init.el'),
+                             os.path.join(dir_, 'init.el.backup'))
         system('cd tmp/update-vm-data/emacs/; cp init.el %s' % dir_)
         system('chmod -R a+rwx %s' % dir_) 
         system('chown -R %s:%s %s' % (u, u, dir_)) 
-
-def ciss145():
-    dnfinstall('python-pygame')
-
-def ciss245():
-    dnfinstall(['SDL',
-                'SDL-devel', 
-                'SDL_gfx-devel',
-                'SDL_net-devel',
-                'SDL-static',
-                'SDL_sound-devel',
-                'SDL_image-devel',
-                'SDL_ttf-devel',
-                'SDL_mixer-devel'])
-
-def ciss380():
-    dnfinstall(['freeglut',
-                'freeglut-devel',
-                'glew',
-                'glew-devel',
-                'glm-devel',
-                'assimp-devel'])
-
-def ciss445():
-    dnfinstall('ocaml')
-
-def ciss430():
-    dnfinstall(['httpd',
-                'mysql',
-                'mysql-server',
-                'mysql-devel',
-                'phpmyadmin',
-                'MySQL-python',
-                'python-sqlalchemy',
-                'mod_wsgi'])
-
-def texlive():
-    dnfinstall(['texlive',
-                'texlive-latex',
-                'texlive-import',
-                'texlive-lipsum',
-                'texlive-lastpage',
-                'texlive-upquote',
-                'texlive-boxedminipage',
-                'texlive-ulem',
-                'texlive-cancel'])
 
 def devtools():
     dnfinstall(['gcc',
@@ -140,42 +126,27 @@ def devtools():
                 'atril',
                 'git-core'])
 
-def dnfremove(names):
-   if isinstance(names, str):
-      names = [names]
-   for name in names:
-      system('dnf remove %s' % name)
-      
-def remove_bloatware():
+def bloatware():
     dnfremove(['vinagre*',
                'tigervnc*',
                'simple-scan*',
                'thunderbird*',
                'transmission*'])
-              
-# install fedora packages
-def initial():
-    emacs()
-    devtools()
-    ciss145()
-    ciss245()
-    ciss380()
-    ciss430()
-    ciss445()
-    texlive()
 
-# download data from github
-def download():
-    print(">>>> downloading update-vm-data ...", flush=True)
-    os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
+def texlive():
+    dnfinstall(['texlive',
+                'texlive-latex',
+                'texlive-import',
+                'texlive-lipsum',
+                'texlive-lastpage',
+                'texlive-upquote',
+                'texlive-boxedminipage',
+                'texlive-ulem',
+                'texlive-cancel'])
 
-def system(cmd):
-    print(">>>>", cmd)
-    os.system(cmd)
-    
 def latex():
     """ TODO: change yliowtest to yliow """
-    print(">>>> installing latex packages ...", flush=True)
+    print(">>>> installing latex packages (yliow) ...", flush=True)
     system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliow')
     system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliow')
     system('cd tmp/update-vm-data/; cp -r latex/yliow/* /usr/share/texlive/texmf-local/tex/latex/yliow/')
@@ -231,6 +202,55 @@ def alex():
             s += '\n' + t + '\n'
             f = open('/home/%s/.bashrc' % u, 'w'); f.write(s); f.close()
 
+# course specific
+def ciss145():
+    dnfinstall('python-pygame')
+
+def ciss245():
+    dnfinstall(['SDL',
+                'SDL-devel', 
+                'SDL_gfx-devel',
+                'SDL_net-devel',
+                'SDL-static',
+                'SDL_sound-devel',
+                'SDL_image-devel',
+                'SDL_ttf-devel',
+                'SDL_mixer-devel'])
+
+def ciss380():
+    dnfinstall(['freeglut',
+                'freeglut-devel',
+                'glew',
+                'glew-devel',
+                'glm-devel',
+                'assimp-devel'])
+
+def ciss430():
+    dnfinstall(['httpd',
+                'mysql',
+                'mysql-server',
+                'mysql-devel',
+                'phpmyadmin',
+                'python-PyMySQL',
+                'python-sqlalchemy',
+                'mod_wsgi'])
+
+def ciss445():
+    dnfinstall('ocaml')
+
+def everything():
+    bashrc()
+    emacs()
+    devtools()
+    texlive()
+    latex()
+    python()
+    alex()
+    ciss145()
+    ciss245()
+    ciss380()
+    ciss430()
+    ciss445()
 
 def clean():
     print(">>>> clean ...")
@@ -238,25 +258,55 @@ def clean():
 
 def tests():
     print(">>>> Testing g++: you should not see any error messages")
+    x = input("press enter to continue or q to quit")
+    if x.strip() == 'q': sys.exit()
     system('cd tests/cpp/; make')
+    
     print(">>>> Testing python: you should not see any error messages")
+    x = input("press enter to continue or q to quit")
+    if x.strip() == 'q': sys.exit()
     system('cd tests/python/; make')
+    
     print(">>>> Testing latex: you should not see any error messages")
+    x = input("press enter to continue or q to quit")
+    if x.strip() == 'q': sys.exit()
     system('cd tests/latex/; make')
-    print(">>>> Testing latex: you should not see any error messages")
-    system('cd tests/latex/; make')
-    print(">>>> Testing opengl: you should not see any error messages")
-    system('cd tests/opengl/; make')
 
+    print(">>>> Testing latex: you should not see any error messages")
+    x = input("press enter to continue or q to quit")
+    if x.strip() == 'q': sys.exit()
+    system('cd tests/latex/; make')
+
+    print(">>>> Testing opengl: you should not see any error messages")
+    x = input("press enter to continue or q to quit")
+    if x.strip() == 'q': sys.exit()
+    system('cd tests/opengl/; make')
+   
 cwd = os.getcwd()
-download() 
-initial()
-bashrc() 
-emacs()
-latex()
-python()
-alex()
-remove_bloatware()
+maps = ['bashrc':[bashrc],
+        'emacs':[emacs],
+        'devtools':[devtools],
+        'bloatware':[bloatware],
+        'texlive':[texlive],
+        'latex':[latex],
+        'python':[python],
+        'alex':[alex],
+        'ciss145':[ciss145],
+        'ciss245':[ciss245],
+        'ciss380':[ciss380],
+        'ciss430':[ciss430],
+        'ciss445':[ciss445],
+        'all':[everything],
+        'tests':[tests],
+]
+               
+if len(sys.argv) == 1:
+    sys.argv.append('all')
+
+download()
+for argv in sys.argv[1:]:
+    if argv in maps:
+       maps[argv]()     
 clean()
 print(">>>> done!!!")
 print()
