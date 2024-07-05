@@ -246,3 +246,6 @@ alex()
 remove_bloatware()
 clean()
 print(">>>> done!!!")
+print()
+print("to update your vm, login as root and execute update-vm (in any dir)")
+      
