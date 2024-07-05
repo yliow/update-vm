@@ -4,6 +4,9 @@ import sys, os, pwd
 import platform
 import re, glob
 
+print("sys.argv:", sys.argv)
+input("pause ... ")
+
 if os.path.exists('/home/student/yliow'):
    print("yliow ... halting")
 
@@ -79,8 +82,10 @@ def bashrc():
         system('chmod a+rwx /home/%s/.bashrc' % u)
 
     f = open('/root/.bashrc', 'r'); s = f.read(); f.close()
-    if "alias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make'\n" not in s:
-        s += "\nalias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make'\n"
+    bashrc_line = "\nfunction update-vm() { cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; python update '$@'; };\n"
+    if bashrc_line not in s:
+        #s += "\nalias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; python update'\n"
+        s += bashrc_line
         f = open('/root/.bashrc', 'w'); f.write(s); f.close()
         
 def emacs():
@@ -306,8 +311,9 @@ clean()
 print(">>>> done!!!")
 print()
 print(">>>> to update your vm, login as root and execute update-vm (in any dir)")
+print()
 
 option = input(">>>> continue to tests? (y/n) ")
 if option in 'Yy':
    tests()
-print(">>>> halting")
+print(">>>> tests completed ... halting")
