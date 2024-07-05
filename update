@@ -53,8 +53,6 @@ def bashrc():
         s += "\nalias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make'\n"
         f = open('/root/.bashrc', 'w'); f.write(s); f.close()
         
-
-
 def emacs():
     # 1. install emacs
     # 2. for each (non-root) user, copy init.el
@@ -172,35 +170,39 @@ def download():
     print(">>>> downloading update-vm-data ...", flush=True)
     os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
 
+def system(cmd):
+    print(">>>>", cmd)
+    os.system(cmd)
+    
 def latex():
     """ TODO: change yliowtest to yliow """
     print(">>>> installing latex packages ...", flush=True)
-    os.system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliow')
-    os.system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliow')
-    os.system('cd tmp/update-vm-data/; cp -r latex/yliow/* /usr/share/texlive/texmf-local/tex/latex/yliow/')
-    os.system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliow')
-    os.system('texhash')
-    os.system('chmod -R a+r /usr/share/texlive/texmf-config/ls-R') 
-    os.system('chmod -R a+r /usr/share/texlive/texmf-dist/ls-R')
-    os.system('chmod -R a+r /usr/share/texlive/texmf-local///ls-R') 
-    os.system('chmod -R a+r /usr/share/texlive/texmf-var/ls-R')
+    system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliow')
+    system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliow')
+    system('cd tmp/update-vm-data/; cp -r latex/yliow/* /usr/share/texlive/texmf-local/tex/latex/yliow/')
+    system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliow')
+    system('texhash')
+    system('chmod -R a+r /usr/share/texlive/texmf-config/ls-R') 
+    system('chmod -R a+r /usr/share/texlive/texmf-dist/ls-R')
+    system('chmod -R a+r /usr/share/texlive/texmf-local///ls-R') 
+    system('chmod -R a+r /usr/share/texlive/texmf-var/ls-R')
 
 def python():
     print(">>>> installing python packages ...", flush=True)
     site_packages = glob.glob('/usr/lib*/python*.*/site-packages/')
     for p in glob.glob('tmp/update-vm-data/python/*'): # use '*' to include dir case
         for site_package in site_packages:
-            os.system('cp -r %s %s' % (p, site_package))
-            os.system('chmod -R a+rwx %s' % os.path.join(site_package, os.path.split(p)[-1]))
+            system('cp -r %s %s' % (p, site_package))
+            system('chmod -R a+rwx %s' % os.path.join(site_package, os.path.split(p)[-1]))
             # create script symlink if p is "*.py"
             if p.endswith(".py"):     
                 scriptname = os.path.split(p)[-1].split('.')[0] # example abc
                 progpath = os.path.join(site_package, os.path.split(p)[-1]) # example: /usr/lib/python3.7/abc.py
                 scriptpath = os.path.join('/usr/local/bin/', scriptname)
                 if os.path.islink(scriptpath):
-                    os.system('rm -rf %s' % scriptpath)
+                    system('rm -rf %s' % scriptpath)
                 cmd = 'ln -s %s %s' % (progpath, scriptpath)
-                os.system('ln -s %s %s' % (progpath, scriptpath))
+                system('ln -s %s %s' % (progpath, scriptpath))
                   
 # alex
 # WARNING: Do not delete ~/.alex in case there's a ~/.alex/alex config file
@@ -215,48 +217,50 @@ def alex():
     for u in users:
         print(">>>> install alex for user '%s' ..." % u)
         if not os.path.isdir('/home/%s/.alex' % u):
-            os.system('mkdir /home/%s/.alex' % u)
-        os.system('chmod a+rwx /home/%s/.alex' % u)
-        os.system('cd tmp/update-vm-data/alex; cp alexrunner.py /home/%s/.alex/' % u)
-        os.system('cd tmp/update-vm-data/alex; python3 import_alex.py; rm -rf import_alex.py')
-        os.system('cd tmp/update-vm-data/alex; cp __pycache__/*.pyc /home/%s/.alex/alex.pyc' % u)
-        os.system('chmod a+rwx /home/%s/.alex/*' % u)
+            system('mkdir /home/%s/.alex' % u)
+        system('chmod a+rwx /home/%s/.alex' % u)
+        system('cd tmp/update-vm-data/alex; cp alexrunner.py /home/%s/.alex/' % u)
+        system('cd tmp/update-vm-data/alex; python3 import_alex.py; rm -rf import_alex.py')
+        system('cd tmp/update-vm-data/alex; cp __pycache__/*.pyc /home/%s/.alex/alex.pyc' % u)
+        system('chmod a+rwx /home/%s/.alex/*' % u)
         # update .bashrc
         f = open('/home/%s/.bashrc' % u, 'r'); s = f.read(); f.close()
         t = "alias alex='python /home/%s/.alex/alexrunner.py'" % u
         if t not in s:
             print(">>>> ~/.bashrc is backed up as ~/.bashrc.backup")
-            os.system('cp /home/%s/.bashrc /home/%s/.bashrc.backup' % (u, u))
+            system('cp /home/%s/.bashrc /home/%s/.bashrc.backup' % (u, u))
             s += '\n' + t + '\n'
             f = open('/home/%s/.bashrc' % u, 'w'); f.write(s); f.close()
 
 
 def clean():
     print(">>>> clean ...")
-    os.system('rm -rf tmp')
+    system('rm -rf tmp')
 
 def tests():
-    print("Testing g++: you should not see any error messages")
-    os.system('cd tests/cpp/; make')
-    print("Testing python: you should not see any error messages")
-    os.system('cd tests/python/; make')
-    print("Testing latex: you should not see any error messages")
-    os.system('cd tests/latex/; make')
-    print("Testing latex: you should not see any error messages")
-    os.system('cd tests/latex/; make')
-    print("Testing opengl: you should not see any error messages")
-    os.system('cd tests/opengl/; make')
-   
-download() # TESTED
-bashrc() # TESTED
-#emacs() # TESTED
-#initial() # TESTED
-#latex() # TESTED
-#python() # TESTED
+    print(">>>> Testing g++: you should not see any error messages")
+    system('cd tests/cpp/; make')
+    print(">>>> Testing python: you should not see any error messages")
+    system('cd tests/python/; make')
+    print(">>>> Testing latex: you should not see any error messages")
+    system('cd tests/latex/; make')
+    print(">>>> Testing latex: you should not see any error messages")
+    system('cd tests/latex/; make')
+    print(">>>> Testing opengl: you should not see any error messages")
+    system('cd tests/opengl/; make')
+
+cwd = os.getcwd()
+download() 
+initial()
+bashrc() 
+emacs()
+latex()
+python()
 alex()
 remove_bloatware()
 clean()
 print(">>>> done!!!")
 print()
 print("to update your vm, login as root and execute update-vm (in any dir)")
+os.chdir(cwd)
       
