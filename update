@@ -53,7 +53,7 @@ def bashrc():
         s += "\nalias alex='python /home/student/.alex/alexrunner.py\n"
     if "alias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make'" not in s:
         s += "\nalias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; make'\n"
-    f = open('/etc/skel/.bashrc', 'w'); f.write(s); f.close()
+    f = open('/root/.bashrc', 'w'); f.write(s); f.close()
         
 
 
