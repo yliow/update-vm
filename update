@@ -282,7 +282,6 @@ def tests():
     if x.strip() == 'q': sys.exit()
     system('cd tests/opengl/; make')
    
-cwd = os.getcwd()
 maps = {'bashrc':[bashrc],
         'emacs':[emacs],
         'devtools':[devtools],
@@ -311,6 +310,9 @@ for argv in sys.argv[1:]:
 clean()
 print(">>>> done!!!")
 print()
-print("to update your vm, login as root and execute update-vm (in any dir)")
-os.chdir(cwd)
-      
+print(">>>> to update your vm, login as root and execute update-vm (in any dir)")
+
+option = input(">>>> continue to tests? (y/n) ")
+if option in 'Yy':
+   tests()
+print(">>>> halting")
