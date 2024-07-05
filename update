@@ -306,7 +306,8 @@ if len(sys.argv) == 1:
 download()
 for argv in sys.argv[1:]:
     if argv in maps:
-       maps[argv]()     
+        for f in maps[argv]:
+            f()
 clean()
 print(">>>> done!!!")
 print()
