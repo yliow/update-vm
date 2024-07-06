@@ -83,7 +83,7 @@ def bashrc():
 
     # assumes /root/.bashrc exists
     f = open('/root/.bashrc', 'r'); s = f.read(); f.close()
-    bashrc_line = "\nfunction update_vm() { cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; python update $@; };\nalias update-vm='update_vm'\n"
+    bashrc_line = "\nfunction update_vm() { cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; python update; };\nalias update-vm='update_vm'\n"
     lines = s.split('\n')
     lines = [line for line in lines if 'update-vm' not in line or 'update_vm' not in line]
     s = '\n'.join(lines)
