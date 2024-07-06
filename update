@@ -4,6 +4,9 @@ import sys, os, pwd
 import platform
 import re, glob
 
+print("sys.argv:", sys.argv)
+input(" ... ")
+
 if os.path.exists('/home/student/yliow'):
    print("yliow ... halting")
 
