@@ -307,8 +307,6 @@ if len(sys.argv) == 1:
     sys.argv.append('all')
 
 download()
-print("sys.argv:", sys.argv)
-input("pause ...")
 for argv in sys.argv[1:]:
     if argv in maps:
         for f in maps[argv]:
@@ -316,5 +314,5 @@ for argv in sys.argv[1:]:
 clean()
 print(">>>> done!!!")
 print()
-print(">>>> to update your vm, login as root and execute 'update-vm' (in any dir). you need to open a new shell for this command to work.")
+print(">>>> to update your vm, login as root and execute 'update-vm' (in any dir). you need to open a new shell for this command to work. for 'update-vm' to take effect, open a new shell.")
 print()
