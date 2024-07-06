@@ -4,9 +4,6 @@ import sys, os, pwd
 import platform
 import re, glob
 
-print("sys.argv:", sys.argv)
-input(" ... ")
-
 if os.path.exists('/home/student/yliow'):
    print("yliow ... halting")
 
@@ -90,6 +87,8 @@ def bashrc():
     lines = s.split('\n')
     lines = [line for line in lines if 'update-vm' not in line or 'update_vm' not in line]
     s = '\n'.join(lines)
+    # remove blank lines at the bottom
+    s = s.rstrip(); s = s + '\n'
     if bashrc_line not in s:
         s += bashrc_line
         f = open('/root/.bashrc', 'w'); f.write(s); f.close()
