@@ -307,6 +307,8 @@ if len(sys.argv) == 1:
     sys.argv.append('all')
 
 download()
+print("sys.argv:", sys.argv)
+input("pause ...")
 for argv in sys.argv[1:]:
     if argv in maps:
         for f in maps[argv]:
