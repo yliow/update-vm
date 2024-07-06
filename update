@@ -4,9 +4,6 @@ import sys, os, pwd
 import platform
 import re, glob
 
-print("sys.argv:", sys.argv)
-input("pause ... ")
-
 if os.path.exists('/home/student/yliow'):
    print("yliow ... halting")
 
@@ -57,8 +54,11 @@ def download():
     os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
 
 def system(cmd):
+    """
+    source [...] needed is .bashrc is changed (see bashrc() function).
+    """
     print(">>>>", cmd)
-    os.system(cmd)
+    os.system('source /root/.bashrc; %s' % cmd)
 
 def dnfinstall(names):
     if isinstance(names, str):
@@ -81,13 +81,17 @@ def bashrc():
         system('cp tmp/update-vm-data/bashrc/.bashrc /home/%s/.bashrc' % u)
         system('chmod a+rwx /home/%s/.bashrc' % u)
 
+    # assumes /root/.bashrc exists
     f = open('/root/.bashrc', 'r'); s = f.read(); f.close()
-    bashrc_line = "\nfunction update-vm() { cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; python update '$@'; };\n"
+    bashrc_line = "\nfunction update-vm() { cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; python update $@; };\n"
+    lines = s.split('\n')
+    lines = [line for line in lines if 'update-vm' not in line]
+    line = '\n'.join(lines)
     if bashrc_line not in s:
-        #s += "\nalias update-vm='cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; python update'\n"
         s += bashrc_line
         f = open('/root/.bashrc', 'w'); f.write(s); f.close()
-        
+        system('chmod a+r /root/.bashrc; chmod u+w /root/.bashrc')
+
 def emacs():
     # 1. install emacs
     # 2. for each (non-root) user, copy init.el
@@ -310,10 +314,5 @@ for argv in sys.argv[1:]:
 clean()
 print(">>>> done!!!")
 print()
-print(">>>> to update your vm, login as root and execute update-vm (in any dir)")
+print(">>>> to update your vm, login as root and execute 'update-vm' (in any dir). you need to open a new shell for this command to work.")
 print()
-
-option = input(">>>> continue to tests? (y/n) ")
-if option in 'Yy':
-   tests()
-print(">>>> tests completed ... halting")

@@ -1,1 +1,2 @@
-Run "make" as root
+As root run "make" or "python update"
+
