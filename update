@@ -46,18 +46,19 @@ PY_VERS = platform.python_version().split(".")
 print(">>>> python version: %s.%s" % (PY_VERS[0], PY_VERS[1]))
 
 def get_users():
-    os.system('ls /home/ > home.txt')
+    system('ls /home/ > home.txt', verbose=False)
     s = readfile('home.txt')
     s = [_.strip() for _ in s.split('\n') if _.strip() != '']
     s = [_ for _ in s if _ != 'root']
     s = [_ for _ in s if os.path.exists('/home/%s/.bashrc' % _)]
+    system('rm -f home.txt', verbose=False)    
     return s
 USERS = get_users()
 print(">>>> users found:", USERS)
 
-def system(cmd):
+def system(cmd, verbose=True):
     """ source [...] needed if .bashrc is changed (see bashrc() function). """
-    print(">>>>", cmd)
+    if verbose: print(">>>>", cmd)
     os.system('source /root/.bashrc; %s' % cmd)
 
 def dnfinstall(names):
