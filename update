@@ -77,10 +77,10 @@ USERS = get_users()
         
 def download():
     # download update-vm-data to tmp
-    # assume this is executed in /home/[USER]/update-vm/ 
+    # assume this is executed in /home/student/update-vm/ 
     print(">>>> downloading update-vm-data ...", flush=True)
     system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
-    system('chmod -R a+rwx /home/%s/update-vm' % USER)
+    system('chmod -R a+rwx /home/student/update-vm')
 
 def bashrc():
     for u in USERS:
