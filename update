@@ -22,9 +22,19 @@ to update your vm do one of the following:
       su
       cd ~/update-vm
       make
+
+WARNINGS:
+* Original /root/.bashrc is renamed to /root/.bashrc.backup
+* Original /home/[user]/.bashrc is renamed to /home/[user]/.bashrc.backup
+* Original /home/[user]/.emacs.d/init.el is renamed to /home/[user]/emacs.d/init.el.backup
    
    ''')
    sys.exit()
+
+def readfile(path):
+    return open(path, 'r').read()
+def writefile(path, s, format='utf-8'):
+    f = open(path, 'wb'); f.write(s); f.close()
 
 def get_user():
     return pwd.getpwuid(os.getuid())[0] 
@@ -41,11 +51,11 @@ print(">>>> python version: %s.%s" % (py_vers[0], py_vers[1]))
 
 def get_users():
     os.system('ls /home/ > home.txt')
-    f = open('home.txt', 'r')
-    s = f.read()
-    f.close()
+    s = readfile('home.txt')
     s = [_.strip() for _ in s.split('\n') if _.strip() != '']
-    return [_ for _ in s if _ != 'root']
+    s = [_ for _ in s if _ != 'root']
+    s = [_ for _ in s if os.path.exists('/home/%s/.bashrc' % _)]
+    return s
 users = get_users()
 print(">>>> users found:", users)
 
@@ -78,12 +88,21 @@ def dnfremove(names):
 def bashrc():
     users = get_users()
     for u in users:
-        print(">>>> install .bashrc for user '%s' ..." % u)
+        print(">>>> install .bashrc for user '%s' (original version is renamed to .bashrc.backup) ..." % u)
+        system('mv /home/%s/.bashrc /home/%s/.bashrc.backup'  % (u, u))
         system('cp tmp/update-vm-data/bashrc/.bashrc /home/%s/.bashrc' % u)
-        system('chmod a+rwx /home/%s/.bashrc' % u)
+        system('chmod a+rwx /home/%s/.bashrc' % u) # WARNING: overkill
 
+    # Add update-vm alias to root's .bashrc
     # assumes /root/.bashrc exists
-    f = open('/root/.bashrc', 'r'); s = f.read(); f.close()
+    print(">>>> install .bashrc for 'root' (original version is renamed to .bashrc.backup) ...")
+    system('mv /root/.bashrc /root/.bashrc.backup')
+    system('cp tmp/update-vm-data/root-bashrc/.bashrc /root/.bashrc')
+    system('chmod a+rwx /home/%s/.bashrc' % u) # WARNING: overkill
+    return
+    
+    """ prev version: insert alias into .bashrc. Above is easier.
+    s = readfile('/root/.bashrc')
     bashrc_line = """\nfunction update_vm() { cwd=$(pwd); cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; python update $@; cd "${cwd}";};\nalias update-vm='update_vm'\n"""
     lines = s.split('\n')
     lines = [line for line in lines if 'update-vm' not in line or 'update_vm' not in line]
@@ -92,9 +111,10 @@ def bashrc():
     s = s.rstrip(); s = s + '\n'
     if bashrc_line not in s:
         s += bashrc_line
-        f = open('/root/.bashrc', 'w'); f.write(s); f.close()
+        writefile('/root/.bashrc', s)
         system('chmod a+r /root/.bashrc; chmod u+w /root/.bashrc')
-
+    """
+    
 def emacs():
     # 1. install emacs
     # 2. for each (non-root) user, copy init.el
@@ -193,8 +213,7 @@ def alex():
     print(">>>> installing alex ...", flush=True)
     users = get_users()
     
-    f = open('tmp/update-vm-data/alex/import_alex.py', 'w')
-    f.write("import alex"); f.close()
+    writefile('tmp/update-vm-data/alex/import_alex.py', "import alex")
 
     for u in users:
         print(">>>> install alex for user '%s' ..." % u)
@@ -206,7 +225,7 @@ def alex():
         system('cd tmp/update-vm-data/alex; cp __pycache__/*.pyc /home/%s/.alex/alex.pyc' % u)
         system('chmod a+rwx /home/%s/.alex/*' % u)
         # update .bashrc
-        f = open('/home/%s/.bashrc' % u, 'r'); s = f.read(); f.close()
+        s = readfile('/home/%s/.bashrc' % u)
         t = "alias alex='python /home/%s/.alex/alexrunner.py'" % u
         if t not in s:
             print(">>>> ~/.bashrc is backed up as ~/.bashrc.backup")
