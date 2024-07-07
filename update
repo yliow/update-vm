@@ -20,7 +20,6 @@ WARNINGS:
 * Original /home/[user]/.bashrc is renamed to /home/[user]/.bashrc.backup
 * Original /home/[user]/.emacs.d/init.el is renamed to /home/[user]/emacs.d/init.el.backup
 
-[For testing, do not need to be root.]
 '''
 
 import sys, os, pwd
@@ -284,7 +283,7 @@ def clean():
 
 def tests():
     if USER == 'root':
-        print(">>>> it's best to test as student user (root will not see pdf docs by default)")
+        print(">>>> as root will not see pdf docs by default. and cannot run alex")
         x = input("press enter to continue or q to quit: ")
         if x.strip() in ['q','Q']: sys.exit()
         
@@ -302,11 +301,14 @@ def tests():
     x = input("press enter to continue or q to quit (you should not see error messages): ")
     if x.strip() in ['q', 'Q']: sys.exit()
     system('cd tests/latex/; make')
+    print(">>>> to view pdf, as student, view /home/student/update-vm/tests/latex/main.pdf")
 
+    """
     print(">>>> Testing alex:")
     x = input("press enter to continue or q to quit (you should not see error messages): ")
     if x.strip() in ['q', 'Q']: sys.exit()
     system('cd tests/alex/; make')
+    """
 
     print(">>>> Testing opengl:")
     x = input("press enter to continue or q to quit (you should not see error messages): ")
