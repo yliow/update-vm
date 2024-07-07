@@ -1,35 +1,30 @@
 #!/usr/bin/env python
 
-"""
-For testing, do not need to be root.
-"""
-
-import sys, os, pwd
-import platform
-import re, glob
-
-if os.path.exists('/home/student/yliow'):
-   print("yliow ... halting")
-
-if any(_ in sys.argv for _ in ['?', 'h', '-h', 'help', '--help', '-help']):
-   print(r'''
-to update your vm do one of the following:
-
-* in your bash shell, login as root and execute "update-vm":
-      su
+HELP = r'''
+To update your vm do one of the following:
+(1) In your bash shell, execute:
+      su                [enter root password]
       update-vm
-* in your bash shell, login as root, go to ~/update-vm, execute make:
-      su
-      cd ~/update-vm
-      make
+    If (1) does not work, then "update-vm" is not installed. Go to (2).
+(2) In your bash shell, execute:
+      su                [enter root password]
+      cd /home/student  (<--- allow any non-root user using USER??)
+      rm -rf update-vm
+      git clone http://github.com/yliow/update-vm
+      cd update-vm
+      python update     
 
 WARNINGS:
 * Original /root/.bashrc is renamed to /root/.bashrc.backup
 * Original /home/[user]/.bashrc is renamed to /home/[user]/.bashrc.backup
 * Original /home/[user]/.emacs.d/init.el is renamed to /home/[user]/emacs.d/init.el.backup
-   
-   ''')
-   sys.exit()
+
+[For testing, do not need to be root.]
+'''
+
+import sys, os, pwd
+import platform
+import re, glob
 
 def readfile(path):
     return open(path, 'r').read()
@@ -38,16 +33,17 @@ def writefile(path, s, format='utf-8'):
 
 def get_user():
     return pwd.getpwuid(os.getuid())[0] 
-user = get_user()
+USER = get_user()
+print(">>>> user:", USER)
 
 def get_os():
     s = open('/etc/os-release', 'r').read()
     return re.compile('REDHAT_BUGZILLA_PRODUCT_VERSION=(\d+)').search(s).group(1)
-fedora_vers = get_os()
-print(">>>> fedora version:", fedora_vers)
+FEDORA_VERS = get_os()
+print(">>>> fedora version:", FEDORA_VERS)
 
-py_vers = platform.python_version().split(".")
-print(">>>> python version: %s.%s" % (py_vers[0], py_vers[1]))
+PY_VERS = platform.python_version().split(".")
+print(">>>> python version: %s.%s" % (PY_VERS[0], PY_VERS[1]))
 
 def get_users():
     os.system('ls /home/ > home.txt')
@@ -56,18 +52,11 @@ def get_users():
     s = [_ for _ in s if _ != 'root']
     s = [_ for _ in s if os.path.exists('/home/%s/.bashrc' % _)]
     return s
-users = get_users()
-print(">>>> users found:", users)
-
-# download data from github
-def download():
-    print(">>>> downloading update-vm-data ...", flush=True)
-    os.system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
+USERS = get_users()
+print(">>>> users found:", USERS)
 
 def system(cmd):
-    """
-    source [...] needed is .bashrc is changed (see bashrc() function).
-    """
+    """ source [...] needed if .bashrc is changed (see bashrc() function). """
     print(">>>>", cmd)
     os.system('source /root/.bashrc; %s' % cmd)
 
@@ -80,28 +69,37 @@ def dnfinstall(names):
         system('dnf install -y %s' % name)
         
 def dnfremove(names):
-   if isinstance(names, str):
-      names = [names]
-   for name in names:
-      system('dnf remove %s' % name)
+    if isinstance(names, str):
+        names = [names]
+    elif not isinstance(names, list):
+        raise Exception("%s not str or list" % names)
+    for name in names:
+        system('dnf remove %s' % name)
+
+        
+def download():
+    # download update-vm-data to tmp
+    # assume this is executed in /home/[USER]/update-vm/ 
+    print(">>>> downloading update-vm-data ...", flush=True)
+    system('rm -rf tmp; mkdir tmp; cd tmp; git clone http://github.com/yliow/update-vm-data; rm -rf tmp/update-vm-data/.git')
+    system('chmod -R a+rwx /home/%s/update-vm' % USER)
 
 def bashrc():
-    users = get_users()
-    for u in users:
-        print(">>>> install .bashrc for user '%s' (original version is renamed to .bashrc.backup) ..." % u)
+    for u in USERS:
+        print(">>>> install .bashrc for user '%s' (original is renamed to .bashrc.backup) ..." % u)
         system('mv /home/%s/.bashrc /home/%s/.bashrc.backup'  % (u, u))
         system('cp tmp/update-vm-data/bashrc/.bashrc /home/%s/.bashrc' % u)
         system('chmod a+rwx /home/%s/.bashrc' % u) # WARNING: overkill
 
-    # Add update-vm alias to root's .bashrc
+    # Add "update-vm" alias to root's .bashrc
     # assumes /root/.bashrc exists
-    print(">>>> install .bashrc for 'root' (original version is renamed to .bashrc.backup) ...")
+    print(">>>> install .bashrc for 'root' (original is renamed to .bashrc.backup) ...")
     system('mv /root/.bashrc /root/.bashrc.backup')
     system('cp tmp/update-vm-data/root-bashrc/.bashrc /root/.bashrc')
     system('chmod a+rwx /home/%s/.bashrc' % u) # WARNING: overkill
     return
     
-    """ prev version: insert alias into .bashrc. Above is easier.
+    ''' previous version: insert alias into .bashrc. Above is easier.
     s = readfile('/root/.bashrc')
     bashrc_line = """\nfunction update_vm() { cwd=$(pwd); cd /home/student; rm -rf update-vm; git clone http://github.com/yliow/update-vm; cd update-vm; python update $@; cd "${cwd}";};\nalias update-vm='update_vm'\n"""
     lines = s.split('\n')
@@ -113,20 +111,20 @@ def bashrc():
         s += bashrc_line
         writefile('/root/.bashrc', s)
         system('chmod a+r /root/.bashrc; chmod u+w /root/.bashrc')
-    """
+    '''
     
 def emacs():
     # 1. install emacs
     # 2. for each (non-root) user, copy init.el
     dnfinstall('emacs')
-    for u in users:
+    for u in USERS:
         dir_ = '/home/%s/.emacs.d' % u
         if not os.path.isdir(dir_):
             system('mkdir %s' % dir_)
         system('cp %s %s' % (os.path.join(dir_, 'init.el'),
                              os.path.join(dir_, 'init.el.backup')))
         system('cd tmp/update-vm-data/emacs/; cp init.el %s' % dir_)
-        system('chmod -R a+rwx %s' % dir_) 
+        system('chmod -R a+rwx %s' % dir_) # WARNING: overkill
         system('chown -R %s:%s %s' % (u, u, dir_)) 
 
 def devtools():
@@ -195,7 +193,7 @@ def python():
     for p in glob.glob('tmp/update-vm-data/python/*'): # use '*' to include dir case
         for site_package in site_packages:
             system('cp -r %s %s' % (p, site_package))
-            system('chmod -R a+rwx %s' % os.path.join(site_package, os.path.split(p)[-1]))
+            system('chmod -R a+rwx %s' % os.path.join(site_package, os.path.split(p)[-1])) # WARNING: overkill
             # create script symlink if p is "*.py"
             if p.endswith(".py"):     
                 scriptname = os.path.split(p)[-1].split('.')[0] # example abc
@@ -211,11 +209,10 @@ def python():
 # WARNING: alex is installed for all users (except root)
 def alex():
     print(">>>> installing alex ...", flush=True)
-    users = get_users()
     
     writefile('tmp/update-vm-data/alex/import_alex.py', "import alex")
 
-    for u in users:
+    for u in USERS:
         print(">>>> install alex for user '%s' ..." % u)
         if not os.path.isdir('/home/%s/.alex' % u):
             system('mkdir /home/%s/.alex' % u)
@@ -223,7 +220,7 @@ def alex():
         system('cd tmp/update-vm-data/alex; cp alexrunner.py /home/%s/.alex/' % u)
         system('cd tmp/update-vm-data/alex; python3 import_alex.py; rm -rf import_alex.py')
         system('cd tmp/update-vm-data/alex; cp __pycache__/*.pyc /home/%s/.alex/alex.pyc' % u)
-        system('chmod a+rwx /home/%s/.alex/*' % u)
+        system('chmod a+rwx /home/%s/.alex/*' % u) # WARNING: overkill
         # update .bashrc
         s = readfile('/home/%s/.bashrc' % u)
         t = "alias alex='python /home/%s/.alex/alexrunner.py'" % u
@@ -325,27 +322,43 @@ maps = {'bashrc':[bashrc],
         'tests':[tests],
 }
                
-if len(sys.argv) == 1:
-    sys.argv.append('all')
 
+if __name__ == '__main__':
+    # assumes this is executed in /home/student/update-vm/
 
+    if os.path.exists('/home/student/yliow'):
+        print("yliow ... halting")
 
-download()
-for argv in sys.argv[1:]:
-    if argv == 'tests':
-        pass
-    else:
-        if user != 'root':
-           print("login as root and run update-vm (or go to ~/update-vm and run make)")
-           sys.exit()
-           
-    if argv in maps:
-        for f in maps[argv]:
-            f()
-    else:
-        print("unknown arg %s" % argv)   
-clean()
-print(">>>> done!!!")
-print()
-print(">>>> to update your vm, login as root and execute update-vm (in any dir).")
-print()
+    # just to be safe (although this is also done in "update-vm" alias, mkdir update-vm
+    cwd = os.getcwd()
+    if not os.path.isdir('/home/%s/update-vm' % USER):
+        system('mkdir /home/%s/update-vm' % USER)
+    os.chdir('/home/%s/update-vm' % USER)
+   
+    if any(_ in sys.argv for _ in ['?', 'h', '-h', 'help', '--help', '-help']):
+        print(HELP)
+        sys.exit()
+   
+    if len(sys.argv) == 1:
+        sys.argv.append('all')
+
+    download()
+    for argv in sys.argv[1:]:
+        if argv == 'tests':
+            pass
+        else:
+            if user != 'root':
+               print("Login as root to update. Here's the help:\n%s:" % HELP)
+               sys.exit()
+               
+        if argv in maps:
+            for f in maps[argv]:
+                f()
+        else:
+            print(">>>> unknown arg %s" % argv)   
+    clean()
+    print(">>>> done!!!")
+    print()
+    print(">>>> to update your vm, login as root and execute update-vm (in any dir).")
+    print()
+    os.chdir(cwd)
