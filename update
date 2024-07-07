@@ -286,7 +286,7 @@ def tests():
     if USER == 'root':
         print(">>>> it's best to test as student user")
         x = input("press enter to continue or q to quit: ")
-        if x.strip() in 'qQ': sy.exit()
+        if x.strip() in 'qQ': sys.exit()
         
     print(">>>> Testing g++:")
     x = input("press enter to continue or q to quit (you should not see error messages): ")
