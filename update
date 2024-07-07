@@ -284,7 +284,7 @@ def clean():
 
 def tests():
     if USER == 'root':
-        print(">>>> it's best to test as student user")
+        print(">>>> it's best to test as student user (root will not see pdf docs by default)")
         x = input("press enter to continue or q to quit: ")
         if x.strip() in ['q','Q']: sys.exit()
         
