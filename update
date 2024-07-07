@@ -56,16 +56,13 @@ def writefile(path, s, format='utf-8'):
 def get_user():
     return pwd.getpwuid(os.getuid())[0] 
 USER = get_user()
-print(">>>> user:", USER)
 
 def get_os():
     s = open('/etc/os-release', 'r').read()
     return re.compile('REDHAT_BUGZILLA_PRODUCT_VERSION=(\d+)').search(s).group(1)
 FEDORA_VERS = get_os()
-print(">>>> fedora version:", FEDORA_VERS)
 
 PY_VERS = platform.python_version().split(".")
-print(">>>> python version: %s.%s" % (PY_VERS[0], PY_VERS[1]))
 
 def get_users():
     system('ls /home/ > home.txt', verbose=False)
@@ -76,8 +73,6 @@ def get_users():
     system('rm -f home.txt', verbose=False)    
     return s
 USERS = get_users()
-print(">>>> users found:", USERS)
-
 
         
 def download():
@@ -344,6 +339,11 @@ if __name__ == '__main__':
    
     if len(sys.argv) == 1:
         sys.argv.append('all')
+
+    print(">>>> user:", USER)
+    print(">>>> fedora version:", FEDORA_VERS)
+    print(">>>> python version: %s.%s" % (PY_VERS[0], PY_VERS[1]))
+    print(">>>> users found:", USERS)
 
     download()
     for argv in sys.argv[1:]:
