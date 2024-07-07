@@ -336,7 +336,7 @@ if __name__ == '__main__':
     cwd = os.getcwd()
     if not os.path.isdir('/home/student/update-vm'):
         system('mkdir /home/student/update-vm')
-    os.chdir('/home/%s/update-vm' % USER)
+    os.chdir('/home/student/update-vm')
    
     if any(_ in sys.argv for _ in ['?', 'h', '-h', 'help', '--help', '-help']):
         print(HELP)
