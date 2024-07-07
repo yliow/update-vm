@@ -286,31 +286,31 @@ def tests():
     if USER == 'root':
         print(">>>> it's best to test as student user")
         x = input("press enter to continue or q to quit: ")
-        if x.strip() in 'qQ': sys.exit()
+        if x.strip() in ['q','Q']: sys.exit()
         
     print(">>>> Testing g++:")
     x = input("press enter to continue or q to quit (you should not see error messages): ")
-    if x.strip() in 'qQ': sys.exit()
+    if x.strip() in ['q','Q']: sys.exit()
     system('cd tests/cpp/; make')
     
     print(">>>> Testing python:")
     x = input("press enter to continue or q to quit (you should not see error messages): ")
-    if x.strip() in'qQ': sys.exit()
+    if x.strip() in ['q', 'Q']: sys.exit()
     system('cd tests/python/; make')
     
     print(">>>> Testing latex:")
     x = input("press enter to continue or q to quit (you should not see error messages): ")
-    if x.strip() in 'qQ': sys.exit()
+    if x.strip() in ['q', 'Q']: sys.exit()
     system('cd tests/latex/; make')
 
     print(">>>> Testing alex:")
     x = input("press enter to continue or q to quit (you should not see error messages): ")
-    if x.strip() in 'qQ': sys.exit()
+    if x.strip() in ['q', 'Q']: sys.exit()
     system('cd tests/alex/; make')
 
     print(">>>> Testing opengl:")
     x = input("press enter to continue or q to quit (you should not see error messages): ")
-    if x.strip() in 'qQ': sys.exit()
+    if x.strip() in ['q', 'Q']: sys.exit()
     system('cd tests/opengl/; make')
 
     
