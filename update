@@ -85,14 +85,14 @@ def download():
 def bashrc():
     for u in USERS:
         print(">>>> install .bashrc for user '%s' (original is renamed to .bashrc.backup) ..." % u)
-        system('mv /home/%s/.bashrc /home/%s/.bashrc.backup'  % (u, u))
+        system('cp /home/%s/.bashrc /home/%s/.bashrc.backup'  % (u, u))
         system('cp tmp/update-vm-data/bashrc/.bashrc /home/%s/.bashrc' % u)
         system('chmod a+rwx /home/%s/.bashrc' % u) # WARNING: overkill
 
     # Add "update-vm" alias to root's .bashrc
     # assumes /root/.bashrc exists
     print(">>>> install .bashrc for 'root' (original is renamed to .bashrc.backup) ...")
-    system('mv /root/.bashrc /root/.bashrc.backup')
+    system('cp /root/.bashrc /root/.bashrc.backup')
     system('cp tmp/update-vm-data/root-bashrc/.bashrc /root/.bashrc')
     system('chmod a+rwx /home/%s/.bashrc' % u) # WARNING: overkill
     return
