@@ -350,7 +350,7 @@ if __name__ == '__main__':
         if argv == 'tests':
             pass
         else:
-            if user != 'root':
+            if USER != 'root':
                print("Login as root to update. Here's the help:\n%s:" % HELP)
                sys.exit()
                
