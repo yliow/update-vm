@@ -26,6 +26,27 @@ import sys, os, pwd
 import platform
 import re, glob
 
+def system(cmd, verbose=True):
+    """ source [...] needed if .bashrc is changed (see bashrc() function). """
+    if verbose: print(">>>>", cmd)
+    os.system('source /root/.bashrc; %s' % cmd)
+
+def dnfinstall(names):
+    if isinstance(names, str):
+        names = [names]
+    elif not isinstance(names, list):
+        raise Exception("%s not str or list" % names)
+    for name in names:  
+        system('dnf install -y %s' % name)
+        
+def dnfremove(names):
+    if isinstance(names, str):
+        names = [names]
+    elif not isinstance(names, list):
+        raise Exception("%s not str or list" % names)
+    for name in names:
+        system('dnf remove %s' % name)
+
 def readfile(path):
     return open(path, 'r').read()
 def writefile(path, s, format='utf-8'):
@@ -56,26 +77,6 @@ def get_users():
 USERS = get_users()
 print(">>>> users found:", USERS)
 
-def system(cmd, verbose=True):
-    """ source [...] needed if .bashrc is changed (see bashrc() function). """
-    if verbose: print(">>>>", cmd)
-    os.system('source /root/.bashrc; %s' % cmd)
-
-def dnfinstall(names):
-    if isinstance(names, str):
-        names = [names]
-    elif not isinstance(names, list):
-        raise Exception("%s not str or list" % names)
-    for name in names:  
-        system('dnf install -y %s' % name)
-        
-def dnfremove(names):
-    if isinstance(names, str):
-        names = [names]
-    elif not isinstance(names, list):
-        raise Exception("%s not str or list" % names)
-    for name in names:
-        system('dnf remove %s' % name)
 
         
 def download():
