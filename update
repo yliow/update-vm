@@ -51,7 +51,7 @@ def dnfremove(names):
 def readfile(path):
     return open(path, 'r').read()
 def writefile(path, s, format='utf-8'):
-    f = open(path, 'wb'); f.write(s); f.close()
+    f = open(path, 'w'); f.write(s); f.close()
 
 def get_user():
     return pwd.getpwuid(os.getuid())[0] 
