@@ -15,6 +15,7 @@ To update your vm do one of the following:
       python update     
 
 WARNINGS:
+* Data for update will be stored in /home/student/update-vm, i.e., this assumes that "student" is a user.
 * Original /root/.bashrc is renamed to /root/.bashrc.backup
 * Original /home/[user]/.bashrc is renamed to /home/[user]/.bashrc.backup
 * Original /home/[user]/.emacs.d/init.el is renamed to /home/[user]/emacs.d/init.el.backup
@@ -333,8 +334,8 @@ if __name__ == '__main__':
 
     # just to be safe (although this is also done in "update-vm" alias, mkdir update-vm
     cwd = os.getcwd()
-    if not os.path.isdir('/home/%s/update-vm' % USER):
-        system('mkdir /home/%s/update-vm' % USER)
+    if not os.path.isdir('/home/student/update-vm'):
+        system('mkdir /home/student/update-vm')
     os.chdir('/home/%s/update-vm' % USER)
    
     if any(_ in sys.argv for _ in ['?', 'h', '-h', 'help', '--help', '-help']):
