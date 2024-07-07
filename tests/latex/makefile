@@ -3,6 +3,7 @@ pdf:
 	pdflatex --shell-escape main.tex
 	pdflatex --shell-escape main.tex
 	make cleantmp
+	xdg-open main.pdf
 
 view:
 	xdg-open main.pdf
