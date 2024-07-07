@@ -8,7 +8,7 @@ To update your vm do one of the following:
     If (1) does not work, then "update-vm" is not installed. Go to (2).
 (2) In your bash shell, execute:
       su                [enter root password]
-      cd /home/student  (<--- allow any non-root user using USER??)
+      cd /home/student
       rm -rf update-vm
       git clone http://github.com/yliow/update-vm
       cd update-vm
