@@ -175,7 +175,10 @@ def latex():
     """ TODO: change yliowtest to yliow """
     print(">>>> installing latex packages (yliow) ...", flush=True)
     system('rm -rf /usr/share/texlive/texmf-local/tex/latex/yliow')
-    system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliow')
+    print('>>>> mkdir /usr/share/texlive/texmf-local/tex/latex/yliow')
+    #system('mkdir /usr/share/texlive/texmf-local/tex/latex/yliow')
+    os.makedirs('/usr/share/texlive/texmf-local/tex/latex/yliow')
+    
     system('cd tmp/update-vm-data/; cp -r latex/yliow/* /usr/share/texlive/texmf-local/tex/latex/yliow/')
     system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliow')
     system('texhash')
@@ -183,6 +186,13 @@ def latex():
     system('chmod -R a+r /usr/share/texlive/texmf-dist/ls-R')
     system('chmod -R a+r /usr/share/texlive/texmf-local///ls-R') 
     system('chmod -R a+r /usr/share/texlive/texmf-var/ls-R')
+    
+    system('texhash')
+    system('chmod -R a+rwx /usr/share/texlive/texmf-config/ls-R') 
+    system('chmod -R a+rwx /usr/share/texlive/texmf-dist/ls-R')
+    system('chmod -R a+rwx /usr/share/texlive/texmf-local///ls-R') 
+    system('chmod -R a+rwx /usr/share/texlive/texmf-var/ls-R')
+    system('texhash')
 
 def python():
     print(">>>> installing python packages ...", flush=True)
@@ -303,12 +313,10 @@ def tests():
     system('cd tests/latex/; make')
     print(">>>> to view pdf, as student, view /home/student/update-vm/tests/latex/main.pdf")
 
-    """
     print(">>>> Testing alex:")
-    x = input("press enter to continue or q to quit (you should not see error messages): ")
+    x = input("press enter to continue or q to quit (root will not be able to run alex): ")
     if x.strip() in ['q', 'Q']: sys.exit()
     system('cd tests/alex/; make')
-    """
 
     print(">>>> Testing opengl:")
     x = input("press enter to continue or q to quit (you should not see error messages): ")
