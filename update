@@ -169,7 +169,8 @@ def texlive():
                 'texlive-upquote',
                 'texlive-boxedminipage',
                 'texlive-ulem',
-                'texlive-cancel'])
+                'texlive-cancel',
+                'texlive-mathpartir',])
 
 def latex():
     """ TODO: change yliowtest to yliow """
