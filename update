@@ -185,7 +185,8 @@ def texlive():
                 'texlive-comment',
                 'texlive-mleftright',
                 'texlive-pythontex',
-                'texlive-tikz-cd'])
+                'texlive-tikz-cd',
+                'texlive-environ',])
 
 def latex():
     """ TODO: change yliowtest to yliow """
