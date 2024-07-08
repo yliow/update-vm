@@ -26,10 +26,20 @@ import sys, os, pwd
 import platform
 import re, glob
 
+def get_user():
+    return pwd.getpwuid(os.getuid())[0] 
+USER = get_user()
+
 def system(cmd, verbose=True):
-    """ source [...] needed if .bashrc is changed (see bashrc() function). """
+    """
+    source [...] needed if .bashrc is changed (see bashrc() function).
+    TODO: need to allow choice of .bashrc
+    """
     if verbose: print(">>>>", cmd)
-    os.system('source /root/.bashrc; %s' % cmd)
+    if USER == 'root':
+        os.system('source /root/.bashrc; %s' % cmd)
+    else:
+        os.system('source /home/%s/.bashrc; %s' % (USER, cmd))
 
 def dnfinstall(names):
     if isinstance(names, str):
@@ -51,10 +61,6 @@ def readfile(path):
     return open(path, 'r').read()
 def writefile(path, s, format='utf-8'):
     f = open(path, 'w'); f.write(s); f.close()
-
-def get_user():
-    return pwd.getpwuid(os.getuid())[0] 
-USER = get_user()
 
 def get_os():
     s = open('/etc/os-release', 'r').read()
@@ -294,7 +300,7 @@ def clean():
 
 def tests():
     if USER == 'root':
-        print(">>>> as root will not see pdf docs by default. and cannot run alex")
+        print(">>>> root will not see pdf docs by default and cannot run alex")
         x = input("press enter to continue or q to quit: ")
         if x.strip() in ['q','Q']: sys.exit()
         
