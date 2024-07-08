@@ -104,7 +104,7 @@ def rootbashrc():
     print(">>>> install .bashrc for 'root' (original is renamed to .bashrc.backup) ...")
     system('cp /root/.bashrc /root/.bashrc.backup')
     system('cp tmp/update-vm-data/root-bashrc/.bashrc /root/.bashrc')
-    system('chmod a+rwx /home/%s/.bashrc' % u) # WARNING: overkill
+    system('chmod a+rwx /root/.bashrc') # WARNING: overkill
     return
     
     ''' previous version: insert alias into .bashrc. Above is easier.
