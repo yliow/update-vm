@@ -30,6 +30,22 @@ import sys, os, pwd
 import platform
 import re, glob
 
+TEXLIVE = ['texlive',
+           'texlive-latex',
+           'texlive-import',
+           'texlive-lipsum',
+           'texlive-lastpage',
+           'texlive-upquote',
+           'texlive-boxedminipage',
+           'texlive-ulem',
+           'texlive-cancel',
+           'texlive-mathpartir',
+           'texlive-comment',
+           'texlive-mleftright',
+           'texlive-pythontex',
+           'texlive-tikz-cd',
+           'texlive-environ',]
+
 def get_user():
     return pwd.getpwuid(os.getuid())[0] 
 USER = get_user()
@@ -172,21 +188,7 @@ def bloatware():
                'transmission*'])
 
 def texlive():
-    dnfinstall(['texlive',
-                'texlive-latex',
-                'texlive-import',
-                'texlive-lipsum',
-                'texlive-lastpage',
-                'texlive-upquote',
-                'texlive-boxedminipage',
-                'texlive-ulem',
-                'texlive-cancel',
-                'texlive-mathpartir',
-                'texlive-comment',
-                'texlive-mleftright',
-                'texlive-pythontex',
-                'texlive-tikz-cd',
-                'texlive-environ',])
+    dnfinstall(TEXLIVE)
 
 def latex():
     """ TODO: change yliowtest to yliow """
