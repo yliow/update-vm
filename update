@@ -182,7 +182,7 @@ def texlive():
                 'texlive-cancel',
                 'texlive-mathpartir',
                 'texlive-comment',
-                #'texlive-mleftright,
+                'texlive-mleftright',
                 'texlive-pythontex',
                 'texlive-tikz-cd'])
 
