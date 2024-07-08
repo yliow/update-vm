@@ -1,2 +1,3 @@
 run:
-	alex
+	#alex
+	python /home/student/.alex/alexrunner.py
