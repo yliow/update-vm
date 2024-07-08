@@ -180,7 +180,11 @@ def texlive():
                 'texlive-boxedminipage',
                 'texlive-ulem',
                 'texlive-cancel',
-                'texlive-mathpartir',])
+                'texlive-mathpartir',
+                'texlive-comment',
+                #'texlive-mleftright,
+                'texlive-pythontex',
+                'texlive-tikz-cd'])
 
 def latex():
     """ TODO: change yliowtest to yliow """
