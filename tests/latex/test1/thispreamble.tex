@@ -4,16 +4,6 @@
 \newcommand\ASSESSMENTTYPE{Quiz}
 \newcommand\POINTS{\textwhite{xxx/xxx}}
 
-\makeatletter
-\DeclareOldFontCommand{\rm}{\normalfont\rmfamily}{\mathrm}
-\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf}
-\DeclareOldFontCommand{\tt}{\normalfont\ttfamily}{\mathtt}
-\DeclareOldFontCommand{\bf}{\normalfont\bfseries}{\mathbf}
-\DeclareOldFontCommand{\it}{\normalfont\itshape}{\mathit}
-\DeclareOldFontCommand{\sl}{\normalfont\slshape}{\@nomath\sl}
-\DeclareOldFontCommand{\sc}{\normalfont\scshape}{\@nomath\sc}
-\makeatother
-
 \input{myquizpreamble}
 \input{yliow}
 \input{\COURSE}
@@ -21,16 +11,16 @@
 
 \renewcommand\TITLE{\ASSESSMENTTYPE \ \ASSESSMENT}
 
-\newcommand\topmattertwo{
-\topmatter
-\score \\ \\
-Open \texttt{main.tex} and enter answers (look for
-\texttt{answercode}, \texttt{answerbox}, \texttt{answerlong}).
-Turn the page for detailed instructions.
-To rebuild and view pdf, in bash shell execute \texttt{make}.
-To build a gzip-tar file, in bash shell execute \texttt{make s} and
-you'll get \texttt{submit.tar.gz}.
-}
+%\newcommand\topmattertwo{
+%\topmatter
+%\score \\ \\
+%Open \texttt{main.tex} and enter answers (look for
+%\texttt{answercode}, \texttt{answerbox}, \texttt{answerlong}).
+%Turn the page for detailed instructions.
+%To rebuild and view pdf, in bash shell execute \texttt{make}.
+%To build a gzip-tar file, in bash shell execute \texttt{make s} and
+%you'll get \texttt{submit.tar.gz}.
+%}
 
 \newcommand\tf{T or F or M}
 \newcommand\answerbox[1]{\textbox{\phantom{|}\hspace{-4mm}#1}}
