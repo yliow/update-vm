@@ -166,6 +166,8 @@ def devtools():
                 'libtool',
                 'python-devel', 
                 'python3-devel',
+                'python-scipy',
+                'python-numpy',
                 'zlib',  
                 'gdb',
                 'ddd',
