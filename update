@@ -201,7 +201,7 @@ def latex():
     os.makedirs('/usr/share/texlive/texmf-local/tex/latex/yliow')
     
     system('cd tmp/update-vm-data/; cp -r latex/yliow/* /usr/share/texlive/texmf-local/tex/latex/yliow/')
-    system('chmod a+rwx /usr/share/texlive/texmf-local/tex/latex/yliow')
+    system('chmod -R a+rwx /usr/share/texlive/texmf-local/tex/latex/yliow')
     system('texhash')
     system('chmod -R a+r /usr/share/texlive/texmf-config/ls-R') 
     system('chmod -R a+r /usr/share/texlive/texmf-dist/ls-R')
