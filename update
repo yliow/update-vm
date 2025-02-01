@@ -168,6 +168,7 @@ def devtools():
                 'python3-devel',
                 'python-scipy',
                 'python-numpy',
+                'python-pygments',
                 'zlib',  
                 'gdb',
                 'ddd',
