@@ -44,7 +44,9 @@ TEXLIVE = ['texlive',
            'texlive-mleftright',
            'texlive-pythontex',
            'texlive-tikz-cd',
-           'texlive-environ',]
+           'texlive-environ',
+           'texlive-tikzpagenodes',
+           'texlive-tikzmark',]
 
 def get_user():
     return pwd.getpwuid(os.getuid())[0] 
