@@ -45,8 +45,8 @@ TEXLIVE = ['texlive',
            'texlive-pythontex',
            'texlive-tikz-cd',
            'texlive-environ',
-           'texlive-tikzpagenodes',
-           'texlive-tikzmark',]
+           'texlive-tikzpagenodes', # 2025-06-30
+           'texlive-tikzmark',]     # 2025-06-30
 
 def get_user():
     return pwd.getpwuid(os.getuid())[0] 
