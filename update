@@ -316,6 +316,7 @@ def everything():
     ciss380()
     ciss430()
     ciss445()
+    fix_errors()
 
 def clean():
     print(">>>> clean ...")
@@ -357,6 +358,50 @@ def tests():
     if x.strip() in ['q', 'Q']: sys.exit()
     system('cd tests/opengl/; make')
 
+
+from pathlib import Path
+
+
+def fix_errors():
+    # Fix GTK settings
+    filepath = Path("~/.config/gtk-3.0/settings.ini").expanduser()
+
+    content = """\
+[Settings]
+gtk-application-prefer-dark-theme=false
+gtk-button-images=true
+gtk-cursor-blink=true
+gtk-cursor-blink-time=1000
+gtk-cursor-theme-name=breeze_cursors
+gtk-cursor-theme-size=24
+gtk-decoration-layout=icon:minimize,maximize,close
+gtk-enable-animations=true
+gtk-font-name=Noto Sans, 10
+gtk-icon-theme-name=breeze
+gtk-menu-images=true
+gtk-modules=colorreload-gtk-module:window-decorations-gtk-module
+gtk-primary-button-warps-slider=true
+gtk-sound-theme-name=ocean
+gtk-theme-name=Breeze
+gtk-toolbar-style=3
+gtk-xft-dpi=98304
+"""
+
+    filepath.write_text(content)
+
+    # Remove ~/.emacs if it exists
+    emacs_file = Path("~/.emacs").expanduser()
+
+    if emacs_file.exists():
+        emacs_file.unlink()
+
+    # Replace ~/.emacs.d/init.el with init.el_custom
+    source = Path("init.el_custom")
+    destination = Path("~/.emacs.d/init.el").expanduser()
+
+    content = source.read_text()
+    destination.write_text(content)
+
     
    
 maps = {'rootbashrc':[rootbashrc],
@@ -376,7 +421,8 @@ maps = {'rootbashrc':[rootbashrc],
         'all':[everything],
         'tests':[tests],
 }
-               
+
+
 
 if __name__ == '__main__':
     # assumes this is executed in /home/student/update-vm/
