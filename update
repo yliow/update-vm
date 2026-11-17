@@ -50,7 +50,10 @@ TEXLIVE = ['texlive',
            'texlive-docmute',       # 2025-10-09
            'texlive-xargs',         # 2025-07-21
            'texlive-tikzpagenodes', # 2025-06-30
-           'texlive-tikzmark',]     # 2025-06-30
+           'texlive-tikzmark',      # 2025-06-30
+           'texlive-pmboxdraw',     # 2026-11-16
+           ]
+
 
 
 def get_user():
